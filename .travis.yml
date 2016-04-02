@@ -19,6 +19,7 @@ before_script:
   - sleep 3
   - npm i -g bower@1.7.1 gulp@3.9.0 firebase-tools@2.2.0
   - bower i
+  - chmod +x ./travis-runner.sh
 script:
   - ./travis-runner.sh
 env:
