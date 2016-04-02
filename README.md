@@ -1,5 +1,5 @@
 # Flight Analyzer
-![](https://travis-ci.org/ORFAP/flight-analyzer.svg?branch=master)
+[![Build Status](https://travis-ci.org/ORFAP/flight-analyzer.svg?branch=master)](https://travis-ci.org/ORFAP/flight-analyzer/)
 
 ## Install (for development)
 ```
