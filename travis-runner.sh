@@ -5,9 +5,9 @@ if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]  && [
 then
   npm test
   gulp
-  docker build -t peter-mueller/flight-analyzer .
+  docker build -t petermueller/flight-analyzer .
   docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  docker push peter-mueller/flight-analyzer
+  docker push petermueller/flight-analyzer
 else
   npm test
 fi
