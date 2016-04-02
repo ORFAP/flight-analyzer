@@ -1,5 +1,8 @@
 language: node_js
-sudo: false
+sudo: required
+
+services:
+  - docker
 addons:
   firefox: latest
   apt:
