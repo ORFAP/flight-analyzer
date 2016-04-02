@@ -1,0 +1,15 @@
+{
+  "name": "flight-analyzer",
+  "private": true,
+  "dependencies": {
+    "iron-elements": "PolymerElements/iron-elements#^1.0.0",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
+    "polymer": "Polymer/polymer#^1.2.0",
+    "app-layout": "PolymerLabs/app-layout#^0.0.14",
+    "carbon-route": "PolymerElements/carbon-route#^0.8.4"
+  },
+  "devDependencies": {
+    "web-component-tester": "^4.0.0"
+  },
+  "ignore": []
+}
