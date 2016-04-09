@@ -50,35 +50,54 @@
 </head>
 
 <body unresolved>
-  <!-- build:remove -->
-  <span id="browser-sync-binding"></span>
-  <!-- endbuild -->
+<!-- build:remove -->
+<span id="browser-sync-binding"></span>
+<!-- endbuild -->
 
-  <template is="dom-bind" id="app">
-    <carbon-location route="{{route}}"></carbon-location>
-    <carbon-route route="{{route}}" pattern="/:page" data="{{routeData}}"></carbon-route>
+<template is="dom-bind" id="app">
+  <carbon-location route="{{route}}"></carbon-location>
+  <carbon-route route="{{route}}" pattern="/:page" data="{{routeData}}"></carbon-route>
 
+
+  <app-drawer-layout force-narrow>
+    <app-drawer>
+      <app-header id="menu-header" fixed>
+      <app-toolbar>
+        <iron-icon icon="maps:flight" class="flex"></iron-icon>
+      </app-toolbar>
+      </app-header>
+      <paper-menu selected="{{routeData.page}}" attr-for-selected="page">
+        <paper-item page="">Graph</paper-item>
+        <paper-item page="filters">Load Filter</paper-item>
+      </paper-menu>
+    </app-drawer>
     <app-header-layout>
-      <app-header condenses fixed shadow>
+      <app-header id="main-header" fixed shadow>
         <app-toolbar>
-          <div class="paper-font-code1">Awesome Airline Company's</div>
-        </app-toolbar>
-        <app-toolbar primary>
-          <iron-icon icon="assessment"></iron-icon>
-          <div title class="paper-font-title">Flight Analyzer</div>
+          <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+          <div title class="paper-font-title" spacer>Flight Analyzer</div>
           <paper-icon-button icon="social:share"></paper-icon-button>
         </app-toolbar>
       </app-header>
 
-      <div style="height: 4000px">
-        <!\-\- content goes here \-\->
-      </div>
-    </app-header-layout>
-  </template>
 
-  <!-- build:js scripts/app.js -->
-  <script src="scripts/app.js"></script>
-  <!-- endbuild-->
+      <iron-pages selected="{{routeData.page}}" attr-for-selected="page">
+        <div page="" class="layout horizontal">
+          <flight-graph class="flex"></flight-graph>
+          <flight-filter></flight-filter>
+        </div>
+        <div page="filters">
+          Filters
+        </div>
+      </iron-pages>
+    </app-header-layout>
+
+  </app-drawer-layout>
+</template>
+
+<!-- build:js scripts/app.js -->
+<script src="scripts/app.js"></script>
+<!-- endbuild-->
 </body>
 
 </html>

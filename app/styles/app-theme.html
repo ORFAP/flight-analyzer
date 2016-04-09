@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     --divider-color: #dbdbdb;
     --primary-color: var(--paper-deep-purple-500);
     --light-primary-color: var(--paper-deep-purple-100);
-    --dark-primary-color: var(--paper-indigo-700);
+    --dark-primary-color: var(--paper-deep-purple-700);
     --accent-color: var(--paper-lime-a200);
     --light-accent-color: var(--paper-lime-a100);
     --dark-accent-color: var(--paper-lime-a400);
@@ -48,21 +48,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     @apply(--layout-vertical);
   }
 
-  app-header {
+  #main-header {
     color: var(--primary-background-color);
     background-color: var(--primary-color);
-    padding: 0 16px;
+  }
+  #menu-header {
+    background-color: var(--primary-background-color);
   }
 
-  app-header [title] {
-    margin-left: 32px;
+  app-drawer {
+    --app-drawer-content-container: {
+      background-color: var(--primary-background-color);
+    };
   }
-
-  paper-material {
-    border-radius: 2px;
-    padding: 16px 0 16px 0;
-    margin: 16px auto;
-    background: white;
+  paper-menu {
+    background-color: var(--primary-background-color);
   }
   /* Breakpoints */
 
@@ -70,7 +70,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   @media (max-width: 600px) { }
 
   /* Tablet+ */
-  @media (min-width: 601px) { }
+  @media (min-width: 601px) {
+    iron-pages {
+      padding: 48px 64px;
+    }
+  }
 
   /* Material Design Adaptive Breakpoints */
   /*
