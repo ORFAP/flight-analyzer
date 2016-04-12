@@ -18,49 +18,68 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-        padding: 0px 16px;
       }
 
       paper-material {
         user-select: none;
         background-color: white;
+        border-radius: 2px;
+        padding-left: 8px;
+        padding-bottom: 8px;
       }
     </style>
     <paper-material>
-    <canvas id="chart"></canvas>
+      <canvas id="chart"></canvas>
     </paper-material>
   </template>
   <script>
-  (function() {
-    'use strict';
+    (function () {
+      'use strict';
 
-    Polymer({
-      is: 'flight-graph',
-      attached: function() {
-        var ctx = this.$.chart.getContext("2d");
-        var newChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-              {
-                label: "My First dataset",
-                backgroundColor: "#ec407a",
-                data: [65, 59, 80, 81, 56, 55, 40]
-              },
-              {
-                label: "My Second dataset",
-                backgroundColor: "#ab47bc",
-                data: [28, 48, 40, 19, 86, 27, 90]
+      Polymer({
+        is: 'flight-graph',
+        attached: function () {
+          var ctx = this.$.chart.getContext("2d");
+          var newChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+              datasets: [
+                {
+                  label: "Lufthansa",
+                  backgroundColor: "#ec407a",
+                  data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                  label: "Ryan Air",
+                  backgroundColor: "#ab47bc",
+                  data: [28, 48, 40, 19, 86, 27, 90]
+                }
+              ]
+
+            },
+            options: {
+              scales: {
+                xAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: "Time",
+                    fontStyle: "bold"
+                  }
+                }],
+                yAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: "Flights",
+                    fontStyle: "bold"
+                  }
+                }]
               }
-            ]
-
-          }
-        });
-      },
-      properties: {
-      }
-    });
-  })();
+            }
+          });
+        },
+        properties: {}
+      });
+    })();
   </script>
 </dom-module>
