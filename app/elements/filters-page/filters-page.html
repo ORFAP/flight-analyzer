@@ -49,12 +49,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(paper-font-body1);
         padding: 16px;
         margin-bottom: 32px;
+        transition: background-color 0.5s ease;
+      }
+
+      input:focus {
+        background-color: var(--primary-color);
+        color: var(--primary-background-color);
       }
 
       paper-fab {
         position: fixed;
         right: 48px;
         bottom: 48px;
+        color: black;
       }
 
     </style>
