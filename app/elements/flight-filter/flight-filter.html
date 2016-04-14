@@ -1,0 +1,80 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles-classes.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<dom-module id="flight-filter">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+    </style>
+      <div class="layout vertical">
+
+        <div class="paper-font-code2 self-end">
+          Settings
+        <iron-icon icon="settings"></iron-icon>
+        </div>
+
+        <div class="paper-font-body2">GRAPH</div>
+
+        <paper-dropdown-menu label="X-Axis">
+          <paper-listbox class="dropdown-content" selected="0">
+            <paper-item>Time</paper-item>
+            <paper-item>Destination</paper-item>
+            <paper-item>Origin</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+
+        <paper-dropdown-menu label="Y-Axis">
+          <paper-listbox class="dropdown-content" selected="0">
+            <paper-item>Flights</paper-item>
+            <paper-item>Passengers</paper-item>
+            <paper-item>Delays</paper-item>
+            <paper-item>Delay Duration</paper-item>
+            <paper-item>Cancellations</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+
+        <div class="paper-font-body2">FILTER</div>
+
+        <paper-input
+          label="Airline Name" value="-"></paper-input>
+
+        <paper-input
+          label="Origin Airport" value="-"></paper-input>
+
+        <paper-input
+          label="Destination Airport" value="-"></paper-input>
+
+        <div class="layout horizontal">
+          <span class="flex"></span>
+          <paper-button>Save</paper-button>
+          <paper-button>Apply</paper-button>
+        </div>
+      </div>
+  </template>
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'flight-filter',
+
+        properties: {}
+      });
+    })();
+  </script>
+</dom-module>
