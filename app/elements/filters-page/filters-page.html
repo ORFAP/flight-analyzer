@@ -108,8 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return "";
         },
         _filter: function (filters, name) {
-          name = name.trim();
-          if (!name || name.length === 0) {
+          if (!name || (name = name.trim()).length === 0) {
             return filters;
           }
           return filters.filter(function (item) {
