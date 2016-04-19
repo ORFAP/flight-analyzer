@@ -20,51 +20,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
 
+      .applybtn {
+        color: var(--accent-color);
+      }
+
     </style>
-      <div class="layout vertical">
+    <div class="layout vertical">
 
-        <div class="paper-font-code2 self-end">
-          Settings
+      <div class="paper-font-code2 self-end">
+        Settings
         <iron-icon icon="settings"></iron-icon>
-        </div>
-
-        <div class="paper-font-body2">GRAPH</div>
-
-        <paper-dropdown-menu label="X-Axis">
-          <paper-listbox class="dropdown-content" selected="0">
-            <paper-item>Time</paper-item>
-            <paper-item>Destination</paper-item>
-            <paper-item>Origin</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
-
-        <paper-dropdown-menu label="Y-Axis">
-          <paper-listbox class="dropdown-content" selected="0">
-            <paper-item>Flights</paper-item>
-            <paper-item>Passengers</paper-item>
-            <paper-item>Delays</paper-item>
-            <paper-item>Delay Duration</paper-item>
-            <paper-item>Cancellations</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
-
-        <div class="paper-font-body2">FILTER</div>
-
-        <paper-input
-          label="Airline Name" value="-"></paper-input>
-
-        <paper-input
-          label="Origin Airport" value="-"></paper-input>
-
-        <paper-input
-          label="Destination Airport" value="-"></paper-input>
-
-        <div class="layout horizontal">
-          <span class="flex"></span>
-          <paper-button>Save</paper-button>
-          <paper-button>Apply</paper-button>
-        </div>
       </div>
+
+      <div class="paper-font-body2">GRAPH</div>
+
+      <paper-dropdown-menu label="X-Axis">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}">
+          <paper-item>Time</paper-item>
+          <paper-item>Destination</paper-item>
+          <paper-item>Origin</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-dropdown-menu label="Y-Axis">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}">
+          <paper-item>Flights</paper-item>
+          <paper-item>Passengers</paper-item>
+          <paper-item>Delays</paper-item>
+          <paper-item>Delay Duration</paper-item>
+          <paper-item>Cancellations</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <div class="paper-font-body2">FILTER</div>
+
+      <paper-input
+        label="Airline Name" value="{{dataFilter.filter.airline}}"></paper-input>
+
+      <paper-input
+        label="Origin Airport" value="{{dataFilter.filter.origin}}"></paper-input>
+
+      <paper-input
+        label="Destination Airport" value="{{dataFilter.filter.destination}}"></paper-input>
+
+      <paper-button class="applybtn" >Apply</paper-button>
+
+      <paper-input
+        id="settingsNameInput"
+        label="Settings Name"
+        value="{{settingsName}}"
+        required
+        auto-validate
+        minlength="3"></paper-input>
+
+      <paper-button raised disabled="[[!settingsName]]" on-tap="_saveSettings">Save</paper-button>
+    </div>
   </template>
   <script>
     (function () {
@@ -73,8 +83,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'flight-filter',
 
-        properties: {}
-      });
+        properties: {
+          dataFilter: {
+            type: Object,
+            value: {
+              axis: {
+                x: 0,
+                y: 0
+              },
+              filter: {
+                airline: "-",
+                origin: "-",
+                destination: "-"
+              }
+            }
+          },
+          settingsName: String
+        },
+
+        _saveSettings: function () {
+          if (this.$.settingsNameInput.invalid) {
+            return;
+          }
+          this.fire("save", this.dataFilter);
+        }
+      })
+      ;
     })();
   </script>
 </dom-module>
