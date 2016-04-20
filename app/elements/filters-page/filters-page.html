@@ -75,7 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="layout vertical">
       <input is="iron-input" title="Search" placeholder="Search" bind-value="{{name}}">
 
-      <settings-data id="settingsData" settings-list="{{filters}}"></settings-data>
+      <settings-data id="settingsData" base-url="http://localhost:8080" on-load="_showFilters"></settings-data>
 
       <paper-material elevation="1" role="listbox">
 
@@ -89,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
         </iron-list>
 
-        <h2 hidden="{{_isEmpty(filters)}}" class="paper-font-code2 centered">no filters found</h2>
+        <h2 hidden="{{!_isEmpty(filters)}}" class="paper-font-code2 centered">no filters found</h2>
 
       </paper-material>
     </div>
@@ -105,9 +105,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         properties: {
           filters: {
-            type: Array,
-            notify: true,
-            value: []
+            type: Array
           }
         },
 
@@ -134,12 +132,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _isEmpty: function (arr) {
+          console.log(arr)
           return arr.length == 0;
         },
 
         _select: function (e) {
-          e.preventDefault();
+          console.log(this.selectedFilter);
+          var flightfilter = document.querySelector("#flightfilter");
+          flightfilter.dataFilter = this.selectedFilter;
+        },
+
+        _showFilters: function (e) {
+          this.set("filters", this.$.settingsData.settings);
         }
+
       });
     })();
   </script>

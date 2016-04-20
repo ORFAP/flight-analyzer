@@ -18,14 +18,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       id="ajaxGetSettings"
       url="[[baseUrl]]/settings"
       on-response="_responseHandler"
-      on-error="_errorHandler"></iron-ajax>
+      on-error="_errorHandler"
+      verbose></iron-ajax>
 
     <iron-ajax
       id="ajaxSaveSettings"
       url="[[baseUrl]]/settings"
       method="POST"
       content-type="application/json"
-      on-error="_errorHandler"></iron-ajax>
+      on-error="_errorHandler"
+      verbose></iron-ajax>
 
   </template>
   <script>
@@ -51,20 +53,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         getAll: function () {
-          //this.$.ajaxGetSettings.generateRequest();
-          this.push("settings", {
-            name: "test",
-            creator: "hans"
-          });
-
+          this.$.ajaxGetSettings.generateRequest();
         },
 
-        _responseHandler: function (resp) {
-          this.settings = resp.detail.body;
+        _responseHandler: function (event) {
+          var content = event.detail.__data__.response._embedded.settings;
+          this.set('settings', content);
+          this.fire("load");
         },
 
         _errorHandler: function (e) {
-          console.log(e);
+          console.log("yup");
         }
 
       });

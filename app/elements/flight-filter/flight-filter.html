@@ -55,13 +55,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="paper-font-body2">FILTER</div>
 
       <paper-input
-        label="Airline Name" value="{{dataFilter.filter.airline}}"></paper-input>
+        label="Airline Name" value="{{dataFilter.filter.arlineFilter.0}}"></paper-input>
 
       <paper-input
-        label="Origin Airport" value="{{dataFilter.filter.origin}}"></paper-input>
+        label="Origin Airport" value="{{dataFilter.filter.originFilter.0}}"></paper-input>
 
       <paper-input
-        label="Destination Airport" value="{{dataFilter.filter.destination}}"></paper-input>
+        label="Destination Airport" value="{{dataFilter.filter.destinationFilter.0}}"></paper-input>
 
       <paper-button class="applybtn" >Apply</paper-button>
 
@@ -88,15 +88,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Object,
             value: {
               name: "",
-              creator: "",
+              creator: "Coyote",
               axis: {
                 x: 0,
                 y: 0
               },
               filter: {
-                airline: "-",
-                origin: "-",
-                destination: "-"
+                arlineFilter: ["-"],
+                originFilter: ["-"],
+                destinationFilter: ["-"]
               }
             }
           }
