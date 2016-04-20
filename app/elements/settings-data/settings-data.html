@@ -16,7 +16,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-ajax
       id="ajaxGetSettings"
-      auto
       url="[[baseUrl]]/settings"
       on-response="_responseHandler"
       on-error="_errorHandler"></iron-ajax>
@@ -30,36 +29,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </template>
   <script>
-  (function() {
-    'use strict';
+    (function () {
+      'use strict';
 
-    Polymer({
-      is: 'settings-data',
+      Polymer({
+        is: 'settings-data',
 
-      properties: {
-        baseUrl: String,
-        settingsList: Array
-      },
+        properties: {
+          baseUrl: String,
+          settings: {
+            type: Array,
+            notify: true
+          }
+        },
 
-      save: function(setting) {
-        var ajaxel = this.$.ajaxSaveSettings;
-        ajaxel.body=setting;
-        ajaxel.generateRequest();
-      },
+        save: function (setting) {
+          var ajaxel = this.$.ajaxSaveSettings;
+          console.log(setting);
+          ajaxel.body = setting;
+          ajaxel.generateRequest();
+        },
 
-      getAll: function () {
-        this.$.ajaxGetSettings.generateRequest();
-      },
+        getAll: function () {
+          //this.$.ajaxGetSettings.generateRequest();
+          this.push("settings", {
+            name: "test",
+            creator: "hans"
+          });
 
-      _responseHandler: function (resp) {
-        this.settingsList = resp.detail.body;
-      },
+        },
 
-      _errorHandler: function(e) {
-        console.log(e);
-      }
+        _responseHandler: function (resp) {
+          this.settings = resp.detail.body;
+        },
 
-    });
-  })();
+        _errorHandler: function (e) {
+          console.log(e);
+        }
+
+      });
+    })();
   </script>
 </dom-module>
