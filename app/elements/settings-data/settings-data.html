@@ -17,7 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-ajax
       id="ajaxGetSettings"
       url="[[baseUrl]]/settings"
-      on-response="_responseHandler"
+      on-response="_responseHandlerLoad"
       on-error="_errorHandler"
       verbose></iron-ajax>
 
@@ -27,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       method="POST"
       content-type="application/json"
       on-error="_errorHandler"
+      on-response="_responseHandlerSave"
       verbose></iron-ajax>
 
   </template>
@@ -56,14 +57,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.ajaxGetSettings.generateRequest();
         },
 
-        _responseHandler: function (event) {
+        _responseHandlerSave: function (event) {
+          this._showToast("Successfully saved setting.");
+        },
+
+        _responseHandlerLoad: function (event) {
           var content = event.detail.__data__.response._embedded.settings;
           this.set('settings', content);
           this.fire("load");
         },
 
         _errorHandler: function (e) {
-          console.log("yup");
+          console.log(e);
+          this._showToast(e.detail.error.message);
+        },
+
+        _showToast: function(message) {
+          var toast = document.querySelector("#toast");
+          toast.text = message;
+          toast.show();
         }
 
       });
