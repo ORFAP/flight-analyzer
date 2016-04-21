@@ -62,9 +62,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _responseHandlerLoad: function (event) {
-          var content = event.detail.__data__.response._embedded.settings;
+          var content = event.detail.response._embedded.settings;
           this.set('settings', content);
-          this.fire("load");
         },
 
         _errorHandler: function (e) {

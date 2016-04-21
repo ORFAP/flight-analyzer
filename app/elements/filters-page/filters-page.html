@@ -82,7 +82,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="layout vertical">
       <input is="iron-input" title="Search" placeholder="Search" bind-value="{{name}}">
 
-      <settings-data id="settingsData" base-url="http://localhost:8080" on-load="_showFilters"></settings-data>
+      <settings-data id="settingsData" settings="{{filters}}" base-url="http://localhost:8080"></settings-data>
 
       <paper-material elevation="1" role="listbox">
 
@@ -152,10 +152,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var page = document.querySelector("#ironpages");
           flightfilter.dataFilter = this.selectedFilter;
           page.selected = "";
-        },
-
-        _showFilters: function (e) {
-          this.set("filters", this.$.settingsData.settings);
         }
 
       });
