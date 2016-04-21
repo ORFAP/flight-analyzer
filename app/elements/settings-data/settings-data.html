@@ -48,7 +48,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         save: function (setting) {
           var ajaxel = this.$.ajaxSaveSettings;
-          console.log(setting);
           ajaxel.body = setting;
           ajaxel.generateRequest();
         },
@@ -67,7 +66,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _errorHandler: function (e) {
-          console.log(e);
           this._showToast(e.detail.error.message);
         },
 
