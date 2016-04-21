@@ -13,6 +13,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <dom-module id="flight-filter">
   <template>
     <style>
@@ -65,6 +67,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <paper-button class="applybtn" >Apply</paper-button>
 
+      <paper-checkbox
+        checked="{{dataFilter.shareable}}">Public</paper-checkbox>
+
       <paper-input
         id="settingsNameInput"
         label="Settings Name"
@@ -72,6 +77,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         required
         auto-validate
         minlength="3"></paper-input>
+
+      <paper-input
+        label="Creator"
+        value="{{dataFilter.creator}}"></paper-input>
 
       <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
     </div>
@@ -89,6 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             value: {
               name: "",
               creator: "Coyote",
+              shareable: false,
               axis: {
                 x: 0,
                 y: 0

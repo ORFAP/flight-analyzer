@@ -15,6 +15,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-input/iron-input.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../settings-data/settings-data.html">
 
 <dom-module id="filters-page">
@@ -71,6 +74,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: var(--accent-color);
       }
 
+      iron-icon {
+        margin-right: 8px;
+        color: var(--secondary-text-color);
+      }
     </style>
     <div class="layout vertical">
       <input is="iron-input" title="Search" placeholder="Search" bind-value="{{name}}">
@@ -82,6 +89,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-list items="[[_filter(filters, name)]]" as="filter" selection-enabled selected-item="{{selectedFilter}}">
           <template>
             <paper-item class$="{{_computeClass(selected)}}">
+              <iron-icon icon="lock" hidden="[[filter.shareable]]"></iron-icon>
+              <iron-icon icon="social:public" hidden="[[!filter.shareable]]"></iron-icon>
               <b>[[filter.name]]</b>
               <span class="flex"></span>
               <div>[[filter.creator]]</div>
@@ -120,14 +129,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return "";
         },
 
-        _filter: function (filters, name) {
-          if (!name || (name = name.trim()).length === 0) {
+        _filter: function (filters, filter) {
+          if (!filter || (filter = filter.trim()).length === 0) {
             return filters;
           }
           return filters.filter(function (item) {
-            var substring = name.toLowerCase();
-            var string = item.name.toLowerCase();
-            return string.indexOf(substring) > -1;
+            var filtersubstring = filter.toLowerCase();
+            var namestring = item.name.toLowerCase();
+            var creatorstring = item.creator.toLowerCase();
+            return namestring.indexOf(filtersubstring) > -1 || creatorstring.indexOf(filtersubstring) > -1;
           });
         },
 
