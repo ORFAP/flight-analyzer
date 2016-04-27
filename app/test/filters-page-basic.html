@@ -10,27 +10,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <html>
-
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>Elements Test Runner</title>
-  <meta charset="UTF-8">
+  <title>my-greeting-basic</title>
 
   <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
   <script src="../bower_components/web-component-tester/browser.js"></script>
-</head>
 
+  <!-- Import the element to test -->
+  <link rel="import" href="../elements/filters-page/filters-page.html">
+
+</head>
 <body>
 
-<script>
-  WCT.loadSuites([
-    'filters-page-basic.html',
-    'filters-page-basic.html?dom=shadow'
-  ]);
+<test-fixture id="basic">
+  <template>
+    <filters-page></filters-page>
+  </template>
+</test-fixture>
 
+<script>
+
+  suite('filters-page tests', function() {
+    var filtersPage;
+
+    setup(function() {
+      filtersPage = fixture('basic');
+    });
+
+    test('_computeClass(selected)', function() {
+      assert.equal(filtersPage._computeClass(true), 'iron-selected');
+      assert.equal(filtersPage._computeClass(false), '');
+    });
+
+  });
 </script>
 
-
 </body>
-
 </html>
+
