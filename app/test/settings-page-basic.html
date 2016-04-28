@@ -25,22 +25,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <test-fixture id="basic">
   <template>
-    <filters-page></filters-page>
+    <settings-page></settings-page>
   </template>
 </test-fixture>
 
 <script>
 
-  suite('filters-page tests', function() {
-    var filtersPage;
+  suite('settings-page tests', function() {
+    var settingsPage;
 
     setup(function() {
-      filtersPage = fixture('basic');
+      settingsPage = fixture('basic');
     });
 
     test('_computeClass(selected)', function() {
-      assert.equal(filtersPage._computeClass(true), 'iron-selected');
-      assert.equal(filtersPage._computeClass(false), '');
+      assert.equal(settingsPage._computeClass(true), 'iron-selected');
+      assert.equal(settingsPage._computeClass(false), '');
     });
 
   });
