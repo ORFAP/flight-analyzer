@@ -132,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
           <graph-page page=""></graph-page>
-          <filters-page page="filters"></filters-page>
+          <filters-page current-page="{{routeData.page}}" page="filters"></filters-page>
         </iron-pages>
       </app-header-layout>
 

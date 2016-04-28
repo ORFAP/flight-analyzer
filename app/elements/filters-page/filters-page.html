@@ -115,11 +115,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         properties: {
           filters: {
             type: Array
+          },
+          currentPage: {
+            type: String,
+            observer: "ready"
           }
         },
 
-        ready: function(){
-          this.$.settingsData.getAll();
+        ready: function () {
+          if (this.currentPage === "filters") {
+            this.$.settingsData.getAll();
+          }
         },
 
         _computeClass: function (selected) {
