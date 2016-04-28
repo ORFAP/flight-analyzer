@@ -53,7 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <!-- Add your elements here -->
 <link rel="import" href="../graph-page/graph-page.html">
-<link rel="import" href="../filters-page/filters-page.html">
+<link rel="import" href="../settings-page/settings-page.html">
 
 <dom-module id="flight-app">
   <template>
@@ -132,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
           <graph-page page=""></graph-page>
-          <filters-page current-page="{{routeData.page}}" page="filters"></filters-page>
+          <settings-page current-page="{{routeData.page}}" page="filters"></settings-page>
         </iron-pages>
       </app-header-layout>
 

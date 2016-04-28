@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
-<dom-module id="flight-filter">
+<dom-module id="graph-settings"">
   <template>
     <style>
       :host {
@@ -38,9 +38,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <paper-dropdown-menu label="X-Axis">
         <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}">
-          <paper-item>Time</paper-item>
+          <paper-item>Time</paper-item> <!-- TODO Additional setting for day of week, week in month etc -->
           <paper-item>Destination</paper-item>
-          <paper-item>Origin</paper-item>
+          <paper-item>Airline</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
 
@@ -56,11 +56,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="paper-font-body2">FILTER</div>
 
-      <paper-input
-        label="Airline Name" value="{{dataFilter.filter.arlineFilter.0}}"></paper-input>
+      <!-- TODO Add Filter for time range -->
 
       <paper-input
-        label="Origin Airport" value="{{dataFilter.filter.originFilter.0}}"></paper-input>
+        label="Airline Name" value="{{dataFilter.filter.arlineFilter.0}}"></paper-input>
 
       <paper-input
         label="Destination Airport" value="{{dataFilter.filter.destinationFilter.0}}"></paper-input>
@@ -90,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       'use strict';
 
       Polymer({
-        is: 'flight-filter',
+        is: 'graph-settings',
 
         properties: {
           dataFilter: {
@@ -104,9 +103,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 y: 0
               },
               filter: {
-                arlineFilter: ["-"],
-                originFilter: ["-"],
-                destinationFilter: ["-"]
+                arlineFilter: [""],
+                destinationFilter: [""]
               }
             }
           }

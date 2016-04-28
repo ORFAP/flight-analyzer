@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../flight-filter/flight-filter.html">
+<link rel="import" href="../graph-settings/graph-settings.html">
 <link rel="import" href="../flight-graph/flight-graph.html">
 <link rel="import" href="../settings-data/settings-data.html">
 
@@ -20,13 +20,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
-      flight-filter {
+      graph-settings {
         margin: 32px;
       }
     </style>
     <div class="layout horizontal">
       <flight-graph class="flex"></flight-graph>
-      <flight-filter id="flightfilter" on-save="_saveHandler"></flight-filter>
+      <graph-settings id="flightfilter" on-save="_saveHandler"></graph-settings>
       <settings-data id="settingsData" base-url="http://localhost:8080/"></settings-data>
     </div>
   </template>
