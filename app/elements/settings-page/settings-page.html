@@ -82,11 +82,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="layout vertical">
       <input is="iron-input" title="Search" placeholder="Search" bind-value="{{name}}">
 
-      <settings-data id="settingsData" settings="{{filters}}" base-url="http://localhost:8080"></settings-data>
-
       <paper-material elevation="1" role="listbox">
 
-        <iron-list items="[[_filter(filters, name)]]" as="filter" selection-enabled selected-item="{{selectedFilter}}">
+        <iron-list items="[[_filter(settings, name)]]" as="filter" selection-enabled selected-item="{{selectedFilter}}">
           <template>
             <paper-item class$="{{_computeClass(selected)}}">
               <iron-icon icon="lock" hidden="[[filter.shareable]]"></iron-icon>
@@ -98,7 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
         </iron-list>
 
-        <h2 hidden="{{!_isEmpty(filters)}}" class="paper-font-code2 centered">no filters found</h2>
+        <h2 hidden="{{!_isEmpty(settings)}}" class="paper-font-code2 centered">no settings found</h2>
 
       </paper-material>
     </div>
@@ -113,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'settings-page',
 
         properties: {
-          filters: {
+          settings: {
             type: Array
           },
           currentPage: {
@@ -124,7 +122,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         ready: function () {
           if (this.currentPage === "filters") {
-            this.$.settingsData.getAll();
+            this.fire("load-settings");
           }
         },
 

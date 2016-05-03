@@ -26,8 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <div class="layout horizontal">
       <flight-graph class="flex"></flight-graph>
-      <graph-settings id="flightfilter" on-save="_saveHandler"></graph-settings>
-      <settings-data id="settingsData" base-url="http://localhost:8080/"></settings-data>
+      <graph-settings id="flightfilter"></graph-settings>
     </div>
   </template>
   <script>
@@ -37,11 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'graph-page',
 
-        properties: {},
-
-        _saveHandler: function (e) {
-          this.$.settingsData.save(e.detail);
-        }
+        properties: {}
       });
     })();
   </script>

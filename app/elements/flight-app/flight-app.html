@@ -103,6 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #toast .toast-hide-button {
         color: var(--accent-color);
         margin: 10px;
+        padding: 0px;
       }
     </style>
     <carbon-location route="{{route}}"></carbon-location>
@@ -132,15 +133,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
           <graph-page page=""></graph-page>
-          <settings-page current-page="{{routeData.page}}" page="filters"></settings-page>
+          <settings-page settings="[[settings]]" current-page="{{routeData.page}}" page="filters"></settings-page>
         </iron-pages>
       </app-header-layout>
-
     </app-drawer-layout>
 
+    <settings-data id="settingsData" settings="{{settings}}" base-url="http://localhost:8080"></settings-data>
+
     <paper-toast id="toast">
-      <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">OK</span>
+      <paper-button class="toast-hide-button" tabindex="0" on-tap="_closeToast">OK</paper-button>
     </paper-toast>
+
   </template>
   <script>
   (function() {
@@ -150,15 +153,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'flight-app',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'flight-app',
+        settings:{
+          type: Array,
           notify: true
         }
       },
+
+      listeners: {
+        'save-setting' : '_saveSettingHandler',
+        'load-settings': '_loadSettingsHandler'
+      },
+
       closeDrawer: function(e) {
         this.$.drawer.close();
+      },
+
+      _closeToast: function(e) {
+        this.$.toast.hide()
+      },
+
+      _saveSettingHandler: function (e) {
+        this.$.settingsData.save(e.detail);
+      },
+
+      _loadSettingsHandler: function(e) {
+        this.$.settingsData.getAll();
       }
+
     });
   })();
   </script>

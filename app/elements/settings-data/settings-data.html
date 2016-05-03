@@ -66,7 +66,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _errorHandler: function (e) {
-          this._showToast(e.detail.error.message);
+          var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
+          this._showToast(message);
         },
 
         _showToast: function(message) {
