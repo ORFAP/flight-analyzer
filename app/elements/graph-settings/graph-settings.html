@@ -54,15 +54,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-listbox>
       </paper-dropdown-menu>
 
-      <div class="paper-font-body2">FILTER</div>
+      <div class="paper-font-body2">SELECTORS</div>
 
-      <!-- TODO Add Filter for time range -->
+      <paper-dropdown-menu label="Airline Selector">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.arlineFilter.0}}" attr-for-selected="airline-id">
+          <template is="dom-repeat" items="[[airlines]]" as="airline">
+            <paper-item airline-id="[[airline.id]]">[[airline.name]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
 
-      <paper-input
-        label="Airline Name" value="{{dataFilter.filter.arlineFilter.0}}"></paper-input>
-
-      <paper-input
-        label="Destination Airport" value="{{dataFilter.filter.destinationFilter.0}}"></paper-input>
+      <paper-dropdown-menu label="Destination Selector">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destinationFilter.0}}" attr-for-selected="city-id">
+          <template is="dom-repeat" items="[[cities]]" as="city">
+            <paper-item city-id="[[city.id]]">[[city.name]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
 
       <paper-button class="applybtn" >Apply</paper-button>
 
@@ -82,12 +90,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value="{{dataFilter.creator}}"></paper-input>
 
       <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
-
-      <paper-menu multi>
-        <template is="dom-repeat" items="[[airlines]]" as="airline">
-          <paper-item>[[airline.name]]</paper-item>
-        </template>
-      </paper-menu>
 
     </div>
   </template>
@@ -121,8 +123,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 y: 0
               },
               filter: {
-                arlineFilter: [""],
-                destinationFilter: [""]
+                arlineFilter: [],
+                destinationFilter: []
               }
             }
           }
