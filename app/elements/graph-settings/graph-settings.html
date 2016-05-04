@@ -82,6 +82,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value="{{dataFilter.creator}}"></paper-input>
 
       <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
+
+      <paper-menu multi>
+        <template is="dom-repeat" items="[[airlines]]" as="airline">
+          <paper-item>[[airline.name]]</paper-item>
+        </template>
+      </paper-menu>
+
     </div>
   </template>
   <script>
@@ -92,6 +99,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'graph-settings',
 
         properties: {
+
+          airlines: {
+            type: Array,
+            notify: true
+          },
+
+          cities: {
+            type: Array,
+            notify: true
+          },
+
           dataFilter: {
             type: Object,
             value: {
