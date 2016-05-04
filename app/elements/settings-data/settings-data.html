@@ -57,7 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _responseHandlerSave: function (event) {
-          this._showToast("Successfully saved setting.");
+          this.fire("show_toast", "Successfully saved setting.");
         },
 
         _responseHandlerLoad: function (event) {
@@ -67,13 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _errorHandler: function (e) {
           var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
-          this._showToast(message);
-        },
-
-        _showToast: function(message) {
-          var toast = document.querySelector("#toast");
-          toast.text = message;
-          toast.show();
+          this.fire('show-toast', message);
         }
 
       });
