@@ -85,10 +85,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         auto-validate
         minlength="3"></paper-input>
 
-      <paper-input
-        label="Creator"
-        value="{{dataFilter.creator}}"></paper-input>
-
       <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
 
     </div>
@@ -116,7 +112,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Object,
             value: {
               name: "",
-              creator: "Coyote",
               shareable: false,
               axis: {
                 x: 0,

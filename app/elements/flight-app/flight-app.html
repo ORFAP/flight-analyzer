@@ -52,6 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/carbon-route/carbon-location.html">
 
 <!-- Add your elements here -->
+<link rel="import" href="../login-page/login-page.html">
 <link rel="import" href="../graph-page/graph-page.html">
 <link rel="import" href="../settings-page/settings-page.html">
 <link rel="import" href="../settings-data/settings-data.html">
@@ -83,6 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: var(--primary-background-color);
         background-color: var(--primary-color);
       }
+
       #menu-header {
         background-color: var(--primary-background-color);
       }
@@ -92,6 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           background-color: var(--primary-background-color);
         };
       }
+
       paper-menu {
         background-color: var(--primary-background-color);
       }
@@ -120,22 +123,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </app-toolbar>
         </app-header>
         <paper-menu selected="{{routeData.page}}" attr-for-selected="page" on-tap="closeDrawer">
-          <paper-item page="">Graph</paper-item>
-          <paper-item page="filters">Load Filter</paper-item>
+          <paper-item page="graph">Graph</paper-item>
+          <paper-item page="settings">Load Filter</paper-item>
         </paper-menu>
       </app-drawer>
       <app-header-layout>
         <app-header id="main-header" fixed shadow>
-          <app-toolbar>
+          <app-toolbar hidden="[[!routeData.page]]">
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div title class="paper-font-title" spacer>Flight Analyzer</div>
+            <span>[[username]]</span>
             <paper-icon-button icon="social:share"></paper-icon-button>
+            <paper-icon-button on-tap="_logout" icon="exit-to-app"></paper-icon-button>
           </app-toolbar>
         </app-header>
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
-          <graph-page airlines="[[airlines]]" cities="[[cities]]" page=""></graph-page>
-          <settings-page settings="[[settings]]" current-page="{{routeData.page}}" page="filters"></settings-page>
+          <login-page id="loginpage" username="{{username}}" page=""></login-page>
+          <graph-page airlines="[[airlines]]" cities="[[cities]]" page="graph"></graph-page>
+          <settings-page settings="[[settings]]" current-page="{{routeData.page}}" page="settings"></settings-page>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -143,6 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <settings-data
       id="settingsData"
       base-url="[[base]]"
+      username="[[username]]"
       settings="{{settings}}"></settings-data>
     <transtats-data
       id="transtatsData"
@@ -156,51 +163,66 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </template>
   <script>
-  (function() {
-    'use strict';
+    (function () {
+      'use strict';
 
-    Polymer({
-      is: 'flight-app',
+      Polymer({
+        is: 'flight-app',
 
-      properties: {
-        base: {
-          type: String,
-          value: "http://localhost:8080"
+        properties: {
+          base: {
+            type: String,
+            value: "http://localhost:8080"
+          },
+          settings: {
+            type: Array,
+            notify: true
+          }
         },
-        settings:{
-          type: Array,
-          notify: true
+
+        listeners: {
+          'save-setting': '_saveSettingHandler',
+          'load-settings': '_loadSettingsHandler',
+          'show-toast': '_showToast',
+          'navigate': '_navigateHandler'
+        },
+
+        closeDrawer: function (e) {
+          this.$.drawer.close();
+        },
+
+        _logout: function(e){
+          this.$.loginpage.username = "";
+          this.$.ironpages.selected = "";
+        },
+
+        _isLoginpage: function () {
+          console.log(this.$.ironpages.selected);
+          return this.$.ironpages.selected === "";
+        },
+
+        _closeToast: function (e) {
+          this.$.toast.hide()
+        },
+
+        _saveSettingHandler: function (e) {
+          this.$.settingsData.save(e.detail);
+        },
+
+        _loadSettingsHandler: function (e) {
+          this.$.settingsData.getAll();
+        },
+
+        _showToast: function (e) {
+          var toast = this.$.toast;
+          toast.text = e.detail;
+          toast.show();
+        },
+
+        _navigateHandler: function (e) {
+          this.$.ironpages.selected = e.detail;
         }
-      },
-
-      listeners: {
-        'save-setting' : '_saveSettingHandler',
-        'load-settings': '_loadSettingsHandler',
-        'show-toast': '_showToast'
-      },
-
-      closeDrawer: function(e) {
-        this.$.drawer.close();
-      },
-
-      _closeToast: function(e) {
-        this.$.toast.hide()
-      },
-
-      _saveSettingHandler: function (e) {
-        this.$.settingsData.save(e.detail);
-      },
-
-      _loadSettingsHandler: function(e) {
-        this.$.settingsData.getAll();
-      },
-
-      _showToast: function(e) {
-        var toast = this.$.toast;
-        toast.text = e.detail;
-        toast.show();
-      }
-    });
-  })();
+      });
+    })();
   </script>
 </dom-module>

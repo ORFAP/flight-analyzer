@@ -39,6 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'settings-data',
 
         properties: {
+          username: String,
           baseUrl: String,
           settings: {
             type: Array,
@@ -47,6 +48,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         save: function (setting) {
+          setting.creator = this.username;
+          console.log(setting);
           var ajaxel = this.$.ajaxSaveSettings;
           ajaxel.body = setting;
           ajaxel.generateRequest();
