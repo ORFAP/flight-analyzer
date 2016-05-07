@@ -56,6 +56,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="paper-font-body2">SELECTORS</div>
 
+      <paper-dropdown-menu label="Time Selector">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timeFilter}}" attr-for-selected="enum-value">
+          <paper-item enum-value="DAY_OF_WEEK">Day of week</paper-item>
+          <paper-item enum-value="MONTH_OF_YEAR">Month of year</paper-item>
+          <paper-item enum-value="YEAR">Year</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
       <paper-dropdown-menu label="Airline Selector">
         <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.arlineFilter.0}}" attr-for-selected="airline-id">
           <template is="dom-repeat" items="[[airlines]]" as="airline">
@@ -118,6 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 y: 0
               },
               filter: {
+                timeFilter: "",
                 arlineFilter: [],
                 destinationFilter: []
               }
