@@ -27,6 +27,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-error="_errorHandler"
       verbose></iron-ajax>
 
+    <iron-ajax
+      id="postTable"
+      url="[[baseUrl]]/table"
+      method="POST"
+      body="[[settings]]"
+      content-type="application/json"
+      on-response="_loadTable"
+      on-error="_errorHandler"
+      verbose></iron-ajax>
+
   </template>
   <script>
   (function() {
@@ -44,12 +54,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         airlines: {
           type: Array,
           notify: true
+        },
+        table: {
+          type: Array,
+          notify: true
+        },
+        settings: {
+          type: Object,
+          notify: true,
+          observer: '_settingsChanged'
         }
       },
 
       ready: function(){
         this.$.ajaxGetAirlines.generateRequest();
         this.$.ajaxGetCities.generateRequest();
+      },
+
+      _settingsChanged: function(newSettings, oldSettings) {
+        this.$.postTable.body = newSettings;
+        this.$.postTable.generateRequest();
       },
 
       _loadCities: function(event) {
@@ -60,6 +84,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _loadAirlines: function(event) {
         var airlines = event.detail.response._embedded.airlines;
         this.set('airlines', airlines);
+      },
+
+      _loadTable: function(event) {
+        var table = event.detail.response;
+        this.set('table', table);
       },
 
       _errorHandler: function(e){
