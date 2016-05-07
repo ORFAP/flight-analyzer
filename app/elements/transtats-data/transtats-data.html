@@ -16,14 +16,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-ajax
       id="ajaxGetAirlines"
       url="[[baseUrl]]/airlines"
-      on-response="_responseHandlerLoad"
+      on-response="_loadAirlines"
       on-error="_errorHandler"
       verbose></iron-ajax>
 
     <iron-ajax
       id="ajaxGetCities"
       url="[[baseUrl]]/cities"
-      on-response="_responseHandlerLoad"
+      on-response="_loadCities"
       on-error="_errorHandler"
       verbose></iron-ajax>
 
@@ -52,16 +52,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.ajaxGetCities.generateRequest();
       },
 
-      _responseHandlerLoad: function(e){
-        if(event.detail.response._embedded.cities){
-          this.set('cities', event.detail.response._embedded.cities);
-        } else if(event.detail.response._embedded.airlines){
-          this.set('airlines', event.detail.response._embedded.airlines);
-        }
+      _loadCities: function(event) {
+        var cities = event.detail.response._embedded.cities;
+        this.set('cities', cities);
+      },
+
+      _loadAirlines: function(event) {
+        var airlines = event.detail.response._embedded.airlines;
+        this.set('airlines', airlines);
       },
 
       _errorHandler: function(e){
-        var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
+        var message = e.detail.error.message == null ? "Can't load the data." : e.detail.error.message;
         this.fire('show-toast', message);
       }
     });
