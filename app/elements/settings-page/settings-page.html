@@ -151,9 +151,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _select: function (e) {
           var flightfilter = document.querySelector("#flightfilter");
-          var page = document.querySelector("#ironpages");
           flightfilter.dataFilter = this.selectedFilter;
-          page.selected = "";
+          this.fire('navigate', 'graph');
         }
 
       });

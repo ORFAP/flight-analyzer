@@ -54,15 +54,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-listbox>
       </paper-dropdown-menu>
 
-      <div class="paper-font-body2">FILTER</div>
+      <div class="paper-font-body2">SELECTORS</div>
 
-      <!-- TODO Add Filter for time range -->
+      <paper-dropdown-menu label="Time Selector">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timeFilter}}" attr-for-selected="enum-value">
+          <paper-item enum-value="DAY_OF_WEEK">Day of week</paper-item>
+          <paper-item enum-value="MONTH_OF_YEAR">Month of year</paper-item>
+          <paper-item enum-value="YEAR">Year</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
 
-      <paper-input
-        label="Airline Name" value="{{dataFilter.filter.arlineFilter.0}}"></paper-input>
+      <paper-dropdown-menu label="Airline Selector">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.arlineFilter.0}}" attr-for-selected="airline-id">
+          <template is="dom-repeat" items="[[airlines]]" as="airline">
+            <paper-item airline-id="[[airline.id]]">[[airline.name]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
 
-      <paper-input
-        label="Destination Airport" value="{{dataFilter.filter.destinationFilter.0}}"></paper-input>
+      <paper-dropdown-menu label="Destination Selector">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destinationFilter.0}}" attr-for-selected="city-id">
+          <template is="dom-repeat" items="[[cities]]" as="city">
+            <paper-item city-id="[[city.id]]">[[city.name]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
 
       <paper-button class="applybtn" >Apply</paper-button>
 
@@ -77,11 +93,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         auto-validate
         minlength="3"></paper-input>
 
-      <paper-input
-        label="Creator"
-        value="{{dataFilter.creator}}"></paper-input>
-
       <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
+
     </div>
   </template>
   <script>
@@ -92,19 +105,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'graph-settings',
 
         properties: {
+
+          airlines: {
+            type: Array,
+            notify: true
+          },
+
+          cities: {
+            type: Array,
+            notify: true
+          },
+
           dataFilter: {
             type: Object,
             value: {
               name: "",
-              creator: "Coyote",
               shareable: false,
               axis: {
                 x: 0,
                 y: 0
               },
               filter: {
-                arlineFilter: [""],
-                destinationFilter: [""]
+                timeFilter: "",
+                arlineFilter: [],
+                destinationFilter: []
               }
             }
           }

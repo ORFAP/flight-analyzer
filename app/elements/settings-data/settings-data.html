@@ -39,6 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'settings-data',
 
         properties: {
+          username: String,
           baseUrl: String,
           settings: {
             type: Array,
@@ -47,6 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         save: function (setting) {
+          setting.creator = this.username;
           var ajaxel = this.$.ajaxSaveSettings;
           ajaxel.body = setting;
           ajaxel.generateRequest();
@@ -57,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _responseHandlerSave: function (event) {
-          this._showToast("Successfully saved setting.");
+          this.fire("show-toast", "Successfully saved setting.");
         },
 
         _responseHandlerLoad: function (event) {
@@ -67,13 +69,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _errorHandler: function (e) {
           var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
-          this._showToast(message);
-        },
-
-        _showToast: function(message) {
-          var toast = document.querySelector("#toast");
-          toast.text = message;
-          toast.show();
+          this.fire('show-toast', message);
         }
 
       });
