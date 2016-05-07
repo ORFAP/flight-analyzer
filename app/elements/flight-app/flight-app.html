@@ -139,9 +139,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </app-header>
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
-          <login-page id="loginpage" username="{{username}}" page=""></login-page>
+          <login-page id="loginpage" username="{{username}}" current-page="[[routeData.page]]" page=""></login-page>
           <graph-page airlines="[[airlines]]" cities="[[cities]]" page="graph"></graph-page>
-          <settings-page settings="[[settings]]" current-page="{{routeData.page}}" page="settings"></settings-page>
+          <settings-page settings="[[settings]]" current-page="[[routeData.page]]" page="settings"></settings-page>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>

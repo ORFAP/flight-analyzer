@@ -76,11 +76,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: String,
             value: "",
             notify: true
+          },
+          currentPage: {
+            type: String,
+            notify: true,
+            observer: "_stopVideo"
           }
         },
 
         signin: function(e){
          this.fire('navigate', 'graph');
+        },
+
+        _stopVideo: function(){
+          if(this.currentPage == ""){
+            this.$.bgvid.play();
+          } else {
+            this.$.bgvid.pause();
+          }
         }
 
       });

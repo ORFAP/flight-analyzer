@@ -49,7 +49,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         save: function (setting) {
           setting.creator = this.username;
-          console.log(setting);
           var ajaxel = this.$.ajaxSaveSettings;
           ajaxel.body = setting;
           ajaxel.generateRequest();
