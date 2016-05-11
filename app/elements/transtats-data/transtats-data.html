@@ -31,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       id="postTable"
       url="[[baseUrl]]/routes/filter"
       method="POST"
-      body="[[settings]]"
+      body="[[setting]]"
       content-type="application/json"
       on-response="_loadTable"
       on-error="_errorHandler"
@@ -59,10 +59,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object,
           notify: true
         },
-        settings: {
+        setting: {
           type: Object,
           notify: true,
-          observer: '_settingsChanged'
+          observer: '_settingChanged'
         }
       },
 
@@ -71,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.ajaxGetCities.generateRequest();
       },
 
-      _settingsChanged: function(newSettings, oldSettings) {
+      _settingChanged: function(newSettings, oldSettings) {
         this.$.postTable.body = newSettings;
         this.$.postTable.generateRequest();
       },
