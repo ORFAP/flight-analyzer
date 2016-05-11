@@ -140,7 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
           <login-page id="loginpage" username="{{username}}" current-page="[[routeData.page]]" page=""></login-page>
-          <graph-page airlines="[[airlines]]" cities="[[cities]]" table="[[table]]" page="graph"></graph-page>
+          <graph-page airlines="[[airlines]]" markets="[[markets]]" table="[[table]]" page="graph"></graph-page>
           <settings-page settings="[[settings]]" current-page="[[routeData.page]]" page="settings"></settings-page>
         </iron-pages>
       </app-header-layout>
@@ -155,7 +155,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       id="transtatsData"
       base-url="[[base]]"
       airlines="{{airlines}}"
-      cities="{{cities}}"
+      markets="{{markets}}"
       table="{{table}}"
       setting="[[setting]]"></transtats-data>
 

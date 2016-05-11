@@ -21,9 +21,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       verbose></iron-ajax>
 
     <iron-ajax
-      id="ajaxGetCities"
-      url="[[baseUrl]]/cities"
-      on-response="_loadCities"
+      id="ajaxGetMarkets"
+      url="[[baseUrl]]/markets"
+      on-response="_loadMarkets"
       on-error="_errorHandler"
       verbose></iron-ajax>
 
@@ -47,7 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
         baseUrl: String,
-        cities: {
+        markets: {
           type: Array,
           notify: true
         },
@@ -68,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       ready: function(){
         this.$.ajaxGetAirlines.generateRequest();
-        this.$.ajaxGetCities.generateRequest();
+        this.$.ajaxGetMarkets.generateRequest();
       },
 
       _settingChanged: function(newSettings, oldSettings) {
@@ -76,9 +76,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.postTable.generateRequest();
       },
 
-      _loadCities: function(event) {
-        var cities = event.detail.response._embedded.cities;
-        this.set('cities', cities);
+      _loadMarkets: function(event) {
+        var markets = event.detail.response._embedded.markets;
+        this.set('markets', markets);
       },
 
       _loadAirlines: function(event) {

@@ -78,9 +78,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Destination Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destination.0}}" attr-for-selected="city-id">
-          <template is="dom-repeat" items="[[cities]]" as="city">
-            <paper-item city-id="[[city.id]]">[[city.name]]</paper-item>
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destination.0}}" attr-for-selected="market-id">
+          <template is="dom-repeat" items="[[markets]]" as="market">
+            <paper-item market-id="[[market.id]]">[[market.name]]</paper-item>
           </template>
         </paper-listbox>
       </paper-dropdown-menu>
@@ -116,7 +116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             notify: true
           },
 
-          cities: {
+          markets: {
             type: Array,
             notify: true
           },
