@@ -15,6 +15,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-date-picker-item/paper-date-picker-item.html">
+
 <dom-module id="graph-settings"">
   <template>
     <style>
@@ -36,36 +38,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="paper-font-body2">GRAPH</div>
 
+      <paper-date-picker-item date= "{{dataFilter.rangeFrom}}" icon="get-app" placeholder="From"></paper-date-picker-item>
+      <paper-date-picker-item date= "{{dataFilter.rangeTo}}" icon="file-upload" placeholder="Until"></paper-date-picker-item>
+
       <paper-dropdown-menu label="X-Axis">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}">
-          <paper-item>Time</paper-item> <!-- TODO Additional setting for day of week, week in month etc -->
-          <paper-item>Destination</paper-item>
-          <paper-item>Airline</paper-item>
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
+          <paper-item enum-value="TIME">Time</paper-item> <!-- TODO Additional setting for day of week, week in month etc -->
+          <paper-item enum-value="DESTINATION">Destination</paper-item>
+          <paper-item enum-value="AIRLINE">Airline</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Y-Axis">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}">
-          <paper-item>Flights</paper-item>
-          <paper-item>Passengers</paper-item>
-          <paper-item>Delays</paper-item>
-          <paper-item>Delay Duration</paper-item>
-          <paper-item>Cancellations</paper-item>
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
+          <paper-item enum-value="FLIGHTS">Flights</paper-item>
+          <paper-item enum-value="PASSENGERS">Passengers</paper-item>
+          <paper-item enum-value="DELAYFREQ">Delays</paper-item>
+          <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
+          <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
 
       <div class="paper-font-body2">SELECTORS</div>
 
       <paper-dropdown-menu label="Time Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timeFilter}}" attr-for-selected="enum-value">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}" attr-for-selected="enum-value">
           <paper-item enum-value="DAY_OF_WEEK">Day of week</paper-item>
-          <paper-item enum-value="MONTH_OF_YEAR">Month of year</paper-item>
+          <paper-item enum-value="MONTH">Month</paper-item>
           <paper-item enum-value="YEAR">Year</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Airline Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.arlineFilter.0}}" attr-for-selected="airline-id">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.airline.0}}" attr-for-selected="airline-id">
           <template is="dom-repeat" items="[[airlines]]" as="airline">
             <paper-item airline-id="[[airline.id]]">[[airline.name]]</paper-item>
           </template>
@@ -73,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Destination Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destinationFilter.0}}" attr-for-selected="city-id">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destination.0}}" attr-for-selected="city-id">
           <template is="dom-repeat" items="[[cities]]" as="city">
             <paper-item city-id="[[city.id]]">[[city.name]]</paper-item>
           </template>
@@ -121,14 +126,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             value: {
               name: "",
               shareable: false,
+              rangeFrom: "",
+              rangeTo: "",
               axis: {
                 x: 0,
                 y: 0
               },
               filter: {
-                timeFilter: "",
-                arlineFilter: [],
-                destinationFilter: []
+                timestep: "",
+                airline: [],
+                destination: []
               }
             }
           }
@@ -138,6 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (this.$.settingsNameInput.invalid) {
             return;
           }
+          console.log(this.dataFilter);
           this.fire("save-setting", this.dataFilter);
         }
       })
