@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Airline Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.airline.0}}" attr-for-selected="airline-id">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.airlines.0}}" attr-for-selected="airline-id">
           <template is="dom-repeat" items="[[airlines]]" as="airline">
             <paper-item airline-id="[[airline.id]]">[[airline.name]]</paper-item>
           </template>
@@ -78,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Destination Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destination.0}}" attr-for-selected="market-id">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destinations.0}}" attr-for-selected="market-id">
           <template is="dom-repeat" items="[[markets]]" as="market">
             <paper-item market-id="[[market.id]]">[[market.name]]</paper-item>
           </template>
