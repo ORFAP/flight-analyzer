@@ -25,7 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <div class="layout horizontal">
-      <flight-graph class="flex"></flight-graph>
+      <flight-graph table="[[table]]" class="flex"></flight-graph>
       <graph-settings airlines="[[airlines]]" cities="[[cities]]" id="flightfilter"></graph-settings>
     </div>
   </template>
@@ -36,7 +36,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'graph-page',
 
-        properties: {}
+        properties: {
+          airlines: Array,
+          cities: Array,
+          table: Object
+        }
       });
     })();
   </script>
