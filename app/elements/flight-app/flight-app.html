@@ -209,7 +209,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _applySettingHandler: function(e) {
-          this.set("setting",e.detail);
+          this.$.transtatsData._settingChanged(e.detail);
+          //this.set("setting",e.detail);
         },
 
         _saveSettingHandler: function (e) {

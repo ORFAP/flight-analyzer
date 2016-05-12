@@ -62,7 +62,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         setting: {
           type: Object,
           notify: true,
-          observer: '_settingChanged'
+          observer: "_settingChanged"
         }
       },
 
@@ -71,7 +71,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.ajaxGetMarkets.generateRequest();
       },
 
-      _settingChanged: function(newSettings, oldSettings) {
+      _settingChanged: function(newSettings) {
+        console.log("requested");
         this.$.postTable.body = newSettings;
         this.$.postTable.generateRequest();
       },

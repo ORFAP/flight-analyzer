@@ -62,7 +62,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             observer: '_tableChanged',
             notify: true
-          }
+          },
+          chart: Object
         },
 
         _tableChanged: function(newTable) {
@@ -72,21 +73,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
           console.log(newTable);
 
+          if(this.chart){
+            this.chart.clear();
+            this.chart.destroy();
+          }
+
           var ctx = this.$.chart.getContext("2d");
-          new Chart(ctx, {
+          this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+              labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
               datasets: [
                 {
-                  label: "Lufthansa",
+                  label: "Data",
                   backgroundColor: "#ec407a",
-                  data: [65, 59, 80, 81, 56, 55, 40]
-                },
-                {
-                  label: "Ryan Air",
-                  backgroundColor: "#ab47bc",
-                  data: [28, 48, 40, 19, 86, 27, 90]
+                  data: [newTable.January,
+                  newTable.February,
+                  newTable.March,
+                  newTable.April,
+                  newTable.May,
+                  newTable.June,
+                  newTable.July,
+                  newTable.August,
+                  newTable.September,
+                  newTable.October,
+                  newTable.November,
+                  newTable.December]
                 }
               ]
 
