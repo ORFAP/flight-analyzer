@@ -47,7 +47,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="card-content">
         <paper-input
           label="Username"
-          value="{{username}}"></paper-input>
+          value="{{username}}"
+          on-keydown="_checkForEnter"></paper-input>
       </div>
       <div class="card-actions">
         <span class="flex"></span>
@@ -86,6 +87,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         signin: function(e){
          this.fire('navigate', 'graph');
+        },
+
+        _checkForEnter: function(e){
+          if(e.keyCode==13){
+            this.signin(e);
+          }
         },
 
         _stopVideo: function(){
