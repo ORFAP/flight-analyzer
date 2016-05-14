@@ -182,6 +182,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
+        observers: [
+          '_pageChanged(routeData.page)'
+        ],
+
         listeners: {
           'save-setting': '_saveSettingHandler',
           'apply-setting': '_applySettingHandler',
@@ -190,47 +194,78 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           'navigate': '_navigateHandler'
         },
 
-        closeDrawer: function (e) {
-          this.$.drawer.close();
+        _pageChanged: function (page) {
+          if (page !== "") {
+            var username = this._getCookie("username");
+            if (username) {
+              console.log("cookie present");
+              this.$.loginpage.username = username;
+              this.$.ironpages.selected = "graph";
+            } else {
+              console.log("cookie missing");
+              this.$.ironpages.selected = "";
+            }
+          }
         },
 
-        _logout: function(e){
+        closeDrawer: function (e) {
+          this.$.drawer.close();
+        }
+        ,
+
+        _logout: function (e) {
           this.$.loginpage.username = "";
+          document.cookie = "username=";
           this.$.ironpages.selected = "";
-        },
+        }
+        ,
 
         _isLoginpage: function () {
           console.log(this.$.ironpages.selected);
           return this.$.ironpages.selected === "";
-        },
+        }
+        ,
 
         _closeToast: function (e) {
           this.$.toast.hide()
-        },
+        }
+        ,
 
-        _applySettingHandler: function(e) {
+        _applySettingHandler: function (e) {
           this.$.transtatsData._settingChanged(e.detail);
           //this.set("setting",e.detail);
-        },
+        }
+        ,
 
         _saveSettingHandler: function (e) {
           this.$.settingsData.save(e.detail);
-        },
+        }
+        ,
 
         _loadSettingsHandler: function (e) {
           this.$.settingsData.getAll();
-        },
+        }
+        ,
 
         _showToast: function (e) {
           var toast = this.$.toast;
           toast.text = e.detail;
           toast.show();
-        },
+        }
+        ,
 
         _navigateHandler: function (e) {
           this.$.ironpages.selected = e.detail;
         }
-      });
+        ,
+
+        _getCookie: function (name) {
+          var value = "; " + document.cookie;
+          var parts = value.split("; " + name + "=");
+          if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+      })
+      ;
     })();
   </script>
 </dom-module>

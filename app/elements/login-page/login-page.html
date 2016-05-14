@@ -44,7 +44,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <paper-card heading="ORFAP Flight Analyzer" image="../../images/airplane.png">
-        <div class="card-content">
+      <div class="card-content">
         <paper-input
           label="Username"
           value="{{username}}"
@@ -85,25 +85,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-        signin: function(e){
-         this.fire('navigate', 'graph');
+        signin: function (e) {
+          document.cookie = "username=" + this.username;
+          this.fire('navigate', 'graph');
         },
 
-        _checkForEnter: function(e){
-          if(e.keyCode==13){
+        _checkForEnter: function (e) {
+          if (e.keyCode == 13) {
             this.signin(e);
           }
         },
 
-        _stopVideo: function(){
-          if(this.currentPage == ""){
+        _stopVideo: function () {
+          if (this.currentPage == "") {
             this.$.bgvid.play();
           } else {
             this.$.bgvid.pause();
           }
         },
 
-        _restartVideo: function(e){
+        _restartVideo: function (e) {
           this.$.bgvid.load();
           this.$.bgvid.play();
         }
