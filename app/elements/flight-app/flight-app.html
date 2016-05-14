@@ -190,12 +190,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           'navigate': '_navigateHandler'
         },
 
+        ready: function () {
+          var username = this._getCookie("username");
+          if(username){
+            console.log("cookie present");
+            this.$.loginpage.username = username;
+            this.$.ironpages.selected = "graph";
+          } else {
+            console.log("cookie missing");
+            this.$.ironpages.selected = "";
+          }
+        },
+
         closeDrawer: function (e) {
           this.$.drawer.close();
         },
 
         _logout: function(e){
           this.$.loginpage.username = "";
+          document.cookie = "username=";
           this.$.ironpages.selected = "";
         },
 
@@ -229,6 +242,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _navigateHandler: function (e) {
           this.$.ironpages.selected = e.detail;
+        },
+
+        _getCookie: function (name) {
+          var value = "; " + document.cookie;
+          var parts = value.split("; " + name + "=");
+          if (parts.length == 2) return parts.pop().split(";").shift();
         }
       });
     })();
