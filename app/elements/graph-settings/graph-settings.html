@@ -17,7 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-date-picker-item/paper-date-picker-item.html">
 
-<dom-module id="graph-settings"">
+<dom-module id="graph-settings">
   <template>
     <style>
       :host {
@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Airline Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.airline.0}}" attr-for-selected="airline-id">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.airlines.0}}" attr-for-selected="airline-id">
           <template is="dom-repeat" items="[[airlines]]" as="airline">
             <paper-item airline-id="[[airline.id]]">[[airline.name]]</paper-item>
           </template>
@@ -78,14 +78,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-dropdown-menu>
 
       <paper-dropdown-menu label="Destination Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destination.0}}" attr-for-selected="city-id">
-          <template is="dom-repeat" items="[[cities]]" as="city">
-            <paper-item city-id="[[city.id]]">[[city.name]]</paper-item>
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destinations.0}}" attr-for-selected="market-id">
+          <template is="dom-repeat" items="[[markets]]" as="market">
+            <paper-item market-id="[[market.id]]">[[market.name]]</paper-item>
           </template>
         </paper-listbox>
       </paper-dropdown-menu>
 
-      <paper-button class="applybtn" >Apply</paper-button>
+      <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
 
       <paper-checkbox
         checked="{{dataFilter.shareable}}">Public</paper-checkbox>
@@ -116,7 +116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             notify: true
           },
 
-          cities: {
+          markets: {
             type: Array,
             notify: true
           },
@@ -126,19 +126,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             value: {
               name: "",
               shareable: false,
-              rangeFrom: "",
-              rangeTo: "",
+              rangeFrom: null,
+              rangeTo: null,
               axis: {
                 x: 0,
                 y: 0
               },
               filter: {
                 timestep: "",
-                airline: [],
-                destination: []
+                airlines: [],
+                destinations: []
               }
             }
           }
+        },
+
+        _applySetting: function(event) {
+          this.fire("apply-setting", this.dataFilter);
         },
 
         _saveSettings: function () {

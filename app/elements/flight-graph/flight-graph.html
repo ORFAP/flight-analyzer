@@ -11,6 +11,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="chartjs-import.html">
 
 <dom-module id="flight-graph">
@@ -27,9 +29,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 8px;
         padding-bottom: 8px;
       }
+
+      iron-icon {
+        color: var(--secondary-text-color);
+        padding: 64px;
+        height: 128px;
+        width: 128px;
+      }
+
+
     </style>
+
     <paper-material>
-      <canvas id="chart"></canvas>
+      <div class="layout vertical center">
+        <iron-icon icon="build" hidden$="[[table]]"></iron-icon>
+        <div class="paper-font-body2">Configure the Settings and click APPLY to show the graph.</div>
+      </div>
+      <canvas id="chart" hidden$="[[!table]]"></canvas>
     </paper-material>
   </template>
   <script>
@@ -38,47 +54,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       Polymer({
         is: 'flight-graph',
-        attached: function () {
+        properties: {
+          table: {
+            type: Object,
+            value: function() {
+              return null;
+            },
+            observer: '_tableChanged',
+            notify: true
+          },
+          chart: Object
+        },
+
+        _tableChanged: function(newTable) {
+          if (!newTable) {
+            console.log('Empty table');
+            return;
+          }
+          console.log(newTable);
+
+          if(this.chart){
+            this.chart.clear();
+            this.chart.destroy();
+          }
+
           var ctx = this.$.chart.getContext("2d");
-          var newChart = new Chart(ctx, {
+          this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+              labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
               datasets: [
                 {
-                  label: "Lufthansa",
+                  label: "Flight-Data",
                   backgroundColor: "#ec407a",
-                  data: [65, 59, 80, 81, 56, 55, 40]
-                },
-                {
-                  label: "Ryan Air",
-                  backgroundColor: "#ab47bc",
-                  data: [28, 48, 40, 19, 86, 27, 90]
+                  data: [newTable.January,
+                  newTable.February,
+                  newTable.March,
+                  newTable.April,
+                  newTable.May,
+                  newTable.June,
+                  newTable.July,
+                  newTable.August,
+                  newTable.September,
+                  newTable.October,
+                  newTable.November,
+                  newTable.December]
                 }
               ]
 
-            },
-            options: {
-              scales: {
-                xAxes: [{
-                  scaleLabel: {
-                    display: true,
-                    labelString: "Time",
-                    fontStyle: "bold"
-                  }
-                }],
-                yAxes: [{
-                  scaleLabel: {
-                    display: true,
-                    labelString: "Flights",
-                    fontStyle: "bold"
-                  }
-                }]
-              }
             }
           });
-        },
-        properties: {}
+        }
       });
     })();
   </script>

@@ -38,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         -moz-transform: translateX(-50%) translateY(-50%);
         -webkit-transform: translateX(-50%) translateY(-50%);
         transform: translateX(-50%) translateY(-50%);
-        background: url(polina.jpg) no-repeat;
+        background: url(../../images/planes.PNG) no-repeat;
         background-size: cover;
       }
     </style>
@@ -47,7 +47,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="card-content">
         <paper-input
           label="Username"
-          value="{{username}}"></paper-input>
+          value="{{username}}"
+          on-keydown="_checkForEnter"></paper-input>
       </div>
       <div class="card-actions">
         <span class="flex"></span>
@@ -57,9 +58,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <video
       autoplay
-      loop
       poster="../../images/planes.PNG"
-      id="bgvid">
+      id="bgvid"
+      on-ended='_restartVideo'>
       <source src="../../images/planes.webm" type="video/webm">
     </video>
 
@@ -88,12 +89,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          this.fire('navigate', 'graph');
         },
 
+        _checkForEnter: function(e){
+          if(e.keyCode==13){
+            this.signin(e);
+          }
+        },
+
         _stopVideo: function(){
           if(this.currentPage == ""){
             this.$.bgvid.play();
           } else {
             this.$.bgvid.pause();
           }
+        },
+
+        _restartVideo: function(e){
+          this.$.bgvid.load();
+          this.$.bgvid.play();
         }
 
       });

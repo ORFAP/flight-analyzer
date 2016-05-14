@@ -140,7 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
           <login-page id="loginpage" username="{{username}}" current-page="[[routeData.page]]" page=""></login-page>
-          <graph-page airlines="[[airlines]]" cities="[[cities]]" page="graph"></graph-page>
+          <graph-page airlines="[[airlines]]" markets="[[markets]]" table="[[table]]" page="graph"></graph-page>
           <settings-page settings="[[settings]]" current-page="[[routeData.page]]" page="settings"></settings-page>
         </iron-pages>
       </app-header-layout>
@@ -155,7 +155,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       id="transtatsData"
       base-url="[[base]]"
       airlines="{{airlines}}"
-      cities="{{cities}}"></transtats-data>
+      markets="{{markets}}"
+      table="{{table}}"
+      setting="[[setting]]"></transtats-data>
 
     <paper-toast id="toast">
       <paper-button class="toast-hide-button" tabindex="0" on-tap="_closeToast">OK</paper-button>
@@ -172,7 +174,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         properties: {
           base: {
             type: String,
-            value: "http://localhost:8080"
+            value: "http://192.168.99.100:8081"
           },
           settings: {
             type: Array,
@@ -182,6 +184,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         listeners: {
           'save-setting': '_saveSettingHandler',
+          'apply-setting': '_applySettingHandler',
           'load-settings': '_loadSettingsHandler',
           'show-toast': '_showToast',
           'navigate': '_navigateHandler'
@@ -203,6 +206,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _closeToast: function (e) {
           this.$.toast.hide()
+        },
+
+        _applySettingHandler: function(e) {
+          this.$.transtatsData._settingChanged(e.detail);
+          //this.set("setting",e.detail);
         },
 
         _saveSettingHandler: function (e) {

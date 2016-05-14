@@ -16,14 +16,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-ajax
       id="ajaxGetAirlines"
       url="[[baseUrl]]/airlines"
-      on-response="_responseHandlerLoad"
+      on-response="_loadAirlines"
       on-error="_errorHandler"
       verbose></iron-ajax>
 
     <iron-ajax
-      id="ajaxGetCities"
-      url="[[baseUrl]]/cities"
-      on-response="_responseHandlerLoad"
+      id="ajaxGetMarkets"
+      url="[[baseUrl]]/markets"
+      on-response="_loadMarkets"
+      on-error="_errorHandler"
+      verbose></iron-ajax>
+
+    <iron-ajax
+      id="postTable"
+      url="[[baseUrl]]/routes/filter"
+      method="POST"
+      body="[[setting]]"
+      content-type="application/json"
+      on-response="_loadTable"
       on-error="_errorHandler"
       verbose></iron-ajax>
 
@@ -37,31 +47,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
         baseUrl: String,
-        cities: {
+        markets: {
           type: Array,
           notify: true
         },
         airlines: {
           type: Array,
           notify: true
+        },
+        table: {
+          type: Object,
+          notify: true
+        },
+        setting: {
+          type: Object,
+          notify: true,
+          observer: "_settingChanged"
         }
       },
 
       ready: function(){
         this.$.ajaxGetAirlines.generateRequest();
-        this.$.ajaxGetCities.generateRequest();
+        this.$.ajaxGetMarkets.generateRequest();
       },
 
-      _responseHandlerLoad: function(e){
-        if(event.detail.response._embedded.cities){
-          this.set('cities', event.detail.response._embedded.cities);
-        } else if(event.detail.response._embedded.airlines){
-          this.set('airlines', event.detail.response._embedded.airlines);
-        }
+      _settingChanged: function(newSettings) {
+        console.log("requested");
+        this.$.postTable.body = newSettings;
+        this.$.postTable.generateRequest();
+      },
+
+      _loadMarkets: function(event) {
+        var markets = event.detail.response._embedded.markets;
+        this.set('markets', markets);
+      },
+
+      _loadAirlines: function(event) {
+        var airlines = event.detail.response._embedded.airlines;
+        this.set('airlines', airlines);
+      },
+
+      _loadTable: function(event) {
+        var table = event.detail.response;
+        this.set('table', table);
       },
 
       _errorHandler: function(e){
-        var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
+        var message = e.detail.error.message == null ? "Can't load the data." : e.detail.error.message;
         this.fire('show-toast', message);
       }
     });
