@@ -101,9 +101,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var datasets = this._createDatasets(newTable);
 
           var labels;
-          if(newTable.z==="Time"){
+          if (newTable.z === "Time") {
             var days = [];
-            for(var k in obj) days.push(k);
+            for (var day in newTable.data) {
+              days.push(day)
+            }
             labels = days;
           } else {
             labels = newTable.x;
