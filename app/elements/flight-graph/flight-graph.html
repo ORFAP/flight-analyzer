@@ -88,23 +88,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _tableChanged: function (newTable) {
           if (!newTable) {
-            console.log('Empty table');
             return;
           }
-          console.log(newTable);
 
+          // Clear old chart to avoid overdrawing
           if (this.chart) {
             this.chart.clear();
             this.chart.destroy();
           }
 
+          // Create all datasets for the chart
           var datasets = this._createDatasets(newTable);
+
+          var labels;
+          if(newTable.z==="Time"){
+            var days = [];
+            for(var k in obj) days.push(k);
+            labels = days;
+          } else {
+            labels = newTable.x;
+          }
 
           var ctx = this.$.chart.getContext("2d");
           this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: newTable.x,
+              labels: labels,
               options: {
                 scales: {
                   yAxes: [{
