@@ -57,54 +57,100 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         properties: {
           table: {
             type: Object,
-            value: function() {
+            value: function () {
               return null;
             },
             observer: '_tableChanged',
             notify: true
           },
+          colors: {
+            type: Array,
+            value: [
+              "#ec407a", // Pink 400
+              "#ef5350", // Red 400
+              "#ab47bc", // Purple 400
+              "#7e57c2", // Deep Purple 400
+              "#5c6bc0", // Indigo 400
+              "#2196f3", // Blue 500
+              "#039be5", // Light Blue 600
+              "#0097a7", // Cyan 700
+              "#009688", // Teal 500
+              "#43a047", // Green 600
+              "#689f38", // Light Green 700
+              "#cddc39", // Lime 500
+              "#ffeb3b", // Yellow 500
+              "#ffc107", // Amber 500
+              "#ff9800"  // Orange 500
+            ]
+          },
           chart: Object
         },
 
-        _tableChanged: function(newTable) {
+        _tableChanged: function (newTable) {
           if (!newTable) {
             console.log('Empty table');
             return;
           }
           console.log(newTable);
 
-          if(this.chart){
+          if (this.chart) {
             this.chart.clear();
             this.chart.destroy();
           }
+
+          var datasets = this._createDatasets(newTable);
 
           var ctx = this.$.chart.getContext("2d");
           this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-              datasets: [
-                {
-                  label: "Flight-Data",
-                  backgroundColor: "#ec407a",
-                  data: [newTable.January,
-                  newTable.February,
-                  newTable.March,
-                  newTable.April,
-                  newTable.May,
-                  newTable.June,
-                  newTable.July,
-                  newTable.August,
-                  newTable.September,
-                  newTable.October,
-                  newTable.November,
-                  newTable.December]
+              labels: newTable.x,
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    },
+                    scaleLabel: {
+                      display: true,
+                      labelString: newTable.y
+                    }
+                  }],
+                  xAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Time"
+                    }
+                  }]
                 }
-              ]
-
+              },
+              datasets: datasets
             }
           });
+        },
+
+        _createDatasets: function (data) {
+          var dataset = [];
+
+          if (data.data.length > 15) {
+            this.fire("show-toast", "More than 15 selectors active. Only first 15 can be shown.");
+          }
+
+          var counter = 0;
+          for (var dataElement in data.data) {
+            if (counter <= 15) {
+              dataset.push({
+                label: dataElement,
+                backgroundColor: this.colors[counter],
+                data: data.data[dataElement]
+              });
+            }
+            counter++;
+          }
+
+          return dataset;
         }
+
       });
     })();
   </script>
