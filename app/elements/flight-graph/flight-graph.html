@@ -43,7 +43,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-material>
       <div class="layout vertical center">
         <iron-icon icon="build" hidden$="[[table]]"></iron-icon>
-        <div hidden$="[[table]]" class="paper-font-body2">Configure the Settings and click APPLY to show the graph.</div>
+        <div hidden$="[[table]]" class="paper-font-body2">Configure the Settings and click APPLY to show the graph.
+        </div>
       </div>
       <canvas id="chart" hidden$="[[!table]]"></canvas>
     </paper-material>
@@ -97,67 +98,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.chart.destroy();
           }
 
+          var labels = [];
+          var datasets = [];
+
           if (newTable.z === "TIME") {
-            this._createNewTimeGraph(newTable);
+            var dataValues = [];
+            for (var day in newTable.data) {
+              labels.push(day)
+              dataValues.push(newTable.data[day][0]);
+            }
+
+            datasets = [
+              {
+                label: 'Date',
+                backgroundColor: this.colors[0],
+                data: dataValues
+              }
+            ];
           } else {
-            this._createNewGraph(newTable);
+            labels = newTable.x;
+            datasets = this._createDatasets(newTable);
           }
-        },
-
-        _createNewTimeGraph: function (newTable) {
-          var dates = [];
-          var dataValues = [];
-          for (var day in newTable.data) {
-            dates.push(day)
-            dataValues.push(newTable.data[day][0]);
-          }
-
-          var datasets = [
-            {
-              label: 'Date',
-              backgroundColor: this.colors[0],
-              data: dataValues
-            }
-          ];
 
           var ctx = this.$.chart.getContext("2d");
           this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: dates,
-              options: {
-                scales: {
-                  yAxes: [{
-                    ticks: {
-                      beginAtZero: true
-                    },
-                    scaleLabel: {
-                      display: true,
-                      labelString: newTable.y
-                    }
-                  }],
-                  xAxes: [{
-                    scaleLabel: {
-                      display: true,
-                      labelString: "Time"
-                    }
-                  }]
-                }
-              },
-              datasets: datasets
-            }
-          });
-        },
-
-        _createNewGraph: function (newTable) {
-          // Create all datasets for the chart
-          var datasets = this._createDatasets(newTable);
-
-          var ctx = this.$.chart.getContext("2d");
-          this.chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: newTable.x,
+              labels: labels,
               options: {
                 scales: {
                   yAxes: [{
