@@ -195,16 +195,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _pageChanged: function (page) {
-          if (page !== "") {
-            var username = this._getCookie("username");
-            if (username) {
-              console.log("cookie present");
-              this.$.loginpage.username = username;
-              this.$.ironpages.selected = page;
-            } else {
-              console.log("cookie missing");
-              this.$.ironpages.selected = "";
-            }
+          var username = this._getCookie("username");
+          if (username) {
+            this.$.loginpage.username = username;
+            this.$.ironpages.selected = page;
+          } else {
+            this.$.ironpages.selected = "";
           }
         },
 
