@@ -174,7 +174,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         properties: {
           base: {
             type: String,
-            value: "http://10.179.11.165:8080"
+            value: "http://192.168.99.100:8080"
           },
           settings: {
             type: Array,
@@ -200,7 +200,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if (username) {
               console.log("cookie present");
               this.$.loginpage.username = username;
-              this.$.ironpages.selected = "graph";
+              this.$.ironpages.selected = page;
             } else {
               console.log("cookie missing");
               this.$.ironpages.selected = "";
