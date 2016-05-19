@@ -92,11 +92,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="paper-font-body2">Airline Selector</div>
     <paper-chips-input label="Add an Airline" values="[[_computeAirlines(airlines)]]"
-                       selected-values="{{selectedAirlines}}"></paper-chips-input>
+                       selected-values="{{dataFilter.filter.airlines}}"></paper-chips-input>
 
     <div class="paper-font-body2">Destination Selector</div>
     <paper-chips-input label="Add a Market" values="[[_computeMarkets(markets)]]"
-                       selected-values="{{selectedMarkets}}"></paper-chips-input>
+                       selected-values="{{dataFilter.filter.destinations}}"></paper-chips-input>
 
 
     <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
@@ -172,9 +172,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return airlines.map(function (a) {
           a.label = a.name;
           return a;
-
         });
       },
+
       _computeMarkets: function (markets) {
         return markets.map(function (m) {
           m.label = m.name;
