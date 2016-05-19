@@ -32,7 +32,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     .section {
       color: var(--primary-color);
-      text-align: left;
+    }
+
+    .section.main {
+      border-bottom: 1px solid var(--primary-color);
+      margin-bottom: 8px;
     }
 
     paper-chips-input {
@@ -49,49 +53,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
 
-    <div class="section paper-font-body2">Graph</div>
+    <div class="section main paper-font-body2">Graph</div>
 
 
-    <div class="layout vertical">
+    <paper-input type="date" label="From Date"
+                 value="{{dataFilter.rangeFrom}}"></paper-input>
 
-      <paper-dropdown-menu label="Time Step">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}"
-                       attr-for-selected="enum-value">
-          <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="DAY_OF_WEEK">Day of week
-          </paper-item>
-          <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="WEEK">Week</paper-item>
-          <paper-item enum-value="MONTH">Month</paper-item>
-          <paper-item enum-value="YEAR">Year</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
+    <paper-input type="date" label="To Date"
+                 value="{{dataFilter.rangeTo}}"></paper-input>
 
-      <paper-input type="date" label="From Date"
-                   value="{{dataFilter.rangeFrom}}"></paper-input>
+    <paper-dropdown-menu label="Qualitative Value">
+      <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
+        <paper-item enum-value="TIME">Time</paper-item>
+        <!-- TODO Additional setting for day of week, week in month etc -->
+        <paper-item enum-value="DESTINATION">Destination</paper-item>
+        <paper-item enum-value="AIRLINE">Airline</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
 
-      <paper-input type="date" label="To Date"
-                   value="{{dataFilter.rangeTo}}"></paper-input>
+    <paper-dropdown-menu label="Quantitative Value">
+      <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
+        <paper-item enum-value="FLIGHTS">Flights</paper-item>
+        <paper-item enum-value="PASSENGERS">Passengers</paper-item>
+        <paper-item enum-value="DELAYFREQ">Delays</paper-item>
+        <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
+        <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
 
-      <paper-dropdown-menu label="Qualitative Value">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
-          <paper-item enum-value="TIME">Time</paper-item>
-          <!-- TODO Additional setting for day of week, week in month etc -->
-          <paper-item enum-value="DESTINATION">Destination</paper-item>
-          <paper-item enum-value="AIRLINE">Airline</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
+    <paper-dropdown-menu label="Time Step">
+      <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}"
+                     attr-for-selected="enum-value">
+        <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="DAY_OF_WEEK">Day of week
+        </paper-item>
+        <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="WEEK">Week</paper-item>
+        <paper-item enum-value="MONTH">Month</paper-item>
+        <paper-item enum-value="YEAR">Year</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
 
-      <paper-dropdown-menu label="Quantitative Value">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
-          <paper-item enum-value="FLIGHTS">Flights</paper-item>
-          <paper-item enum-value="PASSENGERS">Passengers</paper-item>
-          <paper-item enum-value="DELAYFREQ">Delays</paper-item>
-          <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
-          <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-    </div>
-
-    <div class="section paper-font-body2">Selectors and Filters</div>
+    <div class="section main paper-font-body2">Selectors and Filters</div>
 
     <div class="section paper-font-body1">Airline Selector</div>
     <paper-chips-input label="Add an Airline" values="[[_computeAirlines(airlines)]]"
@@ -103,6 +104,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
 
+    <div class="section main paper-font-body2">Save Setting</div>
+
+    <paper-checkbox
+      checked="{{dataFilter.shareable}}">Public
+    </paper-checkbox>
 
     <paper-input
       id="settingsNameInput"
@@ -111,10 +117,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       required
       auto-validate
       minlength="3"></paper-input>
-
-    <paper-checkbox
-      checked="{{dataFilter.shareable}}">Public
-    </paper-checkbox>
 
     <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
   </div>
@@ -145,14 +147,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: {
             name: "",
             shareable: false,
-            rangeFrom: null,
-            rangeTo: null,
+            rangeFrom: "2015-01-01",
+            rangeTo: "2015-12-01",
             axis: {
-              x: 0,
-              y: 0
+              x: "TIME",
+              y: "FLIGHTS"
             },
             filter: {
-              timestep: "",
+              timestep: "MONTH",
               airlines: [],
               destinations: []
             }
