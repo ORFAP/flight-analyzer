@@ -16,144 +16,173 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-date-picker-item/paper-date-picker-item.html">
+<link rel="import" href="../../bower_components/paper-chips-input/paper-chips-input.html">
 
 <dom-module id="graph-settings"">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
+<template>
+  <style>
+    :host {
+      display: block;
+    }
 
-      .applybtn {
-        color: var(--accent-color);
-      }
+    .applybtn {
+      color: var(--accent-color);
+    }
 
-    </style>
-    <div class="layout vertical">
+    paper-date-picker-item {
+      max-width: 128px;
+    }
 
-      <div class="paper-font-code2 self-end">
-        Settings
-        <iron-icon icon="settings"></iron-icon>
+    paper-chips-input {
+      width: 256px;
+    }
+
+  </style>
+  <div class="layout vertical">
+
+    <div class="paper-font-code2 self-end">
+      Settings
+      <iron-icon icon="settings"></iron-icon>
+    </div>
+
+
+    <div class="paper-font-body2" class="layout horizontal">
+      <span>GRAPH</span>
+
+      <div class="layout vertical ">
+        <paper-date-picker-item date="{{dataFilter.rangeFrom}}" icon="get-app"
+                                placeholder="From"
+        ></paper-date-picker-item>
+        <paper-date-picker-item date="{{dataFilter.rangeTo}}" icon="file-upload"
+                                placeholder="Until"></paper-date-picker-item>
       </div>
 
-      <div class="paper-font-body2">GRAPH</div>
+      <div class="layout vertical">
+        <paper-dropdown-menu label="X-Axis">
+          <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
+            <paper-item enum-value="TIME">Time</paper-item>
+            <!-- TODO Additional setting for day of week, week in month etc -->
+            <paper-item enum-value="DESTINATION">Destination</paper-item>
+            <paper-item enum-value="AIRLINE">Airline</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
 
-      <paper-date-picker-item date= "{{dataFilter.rangeFrom}}" icon="get-app" placeholder="From"></paper-date-picker-item>
-      <paper-date-picker-item date= "{{dataFilter.rangeTo}}" icon="file-upload" placeholder="Until"></paper-date-picker-item>
-
-      <paper-dropdown-menu label="X-Axis">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
-          <paper-item enum-value="TIME">Time</paper-item> <!-- TODO Additional setting for day of week, week in month etc -->
-          <paper-item enum-value="DESTINATION">Destination</paper-item>
-          <paper-item enum-value="AIRLINE">Airline</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <paper-dropdown-menu label="Y-Axis">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
-          <paper-item enum-value="FLIGHTS">Flights</paper-item>
-          <paper-item enum-value="PASSENGERS">Passengers</paper-item>
-          <paper-item enum-value="DELAYFREQ">Delays</paper-item>
-          <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
-          <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <div class="paper-font-body2">SELECTORS</div>
-
-      <paper-dropdown-menu label="Time Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}" attr-for-selected="enum-value">
-          <paper-item enum-value="DAY_OF_WEEK">Day of week</paper-item>
-          <paper-item enum-value="MONTH">Month</paper-item>
-          <paper-item enum-value="YEAR">Year</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <paper-dropdown-menu label="Airline Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.airlines.0}}" attr-for-selected="airline-id">
-          <template is="dom-repeat" items="[[airlines]]" as="airline">
-            <paper-item airline-id="[[airline.id]]">[[airline.name]]</paper-item>
-          </template>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <paper-dropdown-menu label="Destination Selector">
-        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.destinations.0}}" attr-for-selected="market-id">
-          <template is="dom-repeat" items="[[markets]]" as="market">
-            <paper-item market-id="[[market.id]]">[[market.name]]</paper-item>
-          </template>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
-
-      <paper-checkbox
-        checked="{{dataFilter.shareable}}">Public</paper-checkbox>
-
-      <paper-input
-        id="settingsNameInput"
-        label="Settings Name"
-        value="{{dataFilter.name}}"
-        required
-        auto-validate
-        minlength="3"></paper-input>
-
-      <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
-
+        <paper-dropdown-menu label="Y-Axis">
+          <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
+            <paper-item enum-value="FLIGHTS">Flights</paper-item>
+            <paper-item enum-value="PASSENGERS">Passengers</paper-item>
+            <paper-item enum-value="DELAYFREQ">Delays</paper-item>
+            <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
+            <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
     </div>
-  </template>
-  <script>
-    (function () {
-      'use strict';
 
-      Polymer({
-        is: 'graph-settings',
+    <div class="paper-font-body2">SELECTORS</div>
 
-        properties: {
+    <paper-dropdown-menu label="Time Selector">
+      <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}" attr-for-selected="enum-value">
+        <paper-item enum-value="DAY_OF_WEEK">Day of week</paper-item>
+        <paper-item enum-value="MONTH">Month</paper-item>
+        <paper-item enum-value="YEAR">Year</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
 
-          airlines: {
-            type: Array,
-            notify: true
-          },
 
-          markets: {
-            type: Array,
-            notify: true
-          },
+    <div class="paper-font-body2">Airline Selector</div>
+    <paper-chips-input label="Add an Airline" values="[[_computeAirlines(airlines)]]"
+                       selected-values="{{selectedAirlines}}"></paper-chips-input>
 
-          dataFilter: {
-            type: Object,
-            value: {
-              name: "",
-              shareable: false,
-              rangeFrom: null,
-              rangeTo: null,
-              axis: {
-                x: 0,
-                y: 0
-              },
-              filter: {
-                timestep: "",
-                airlines: [],
-                destinations: []
-              }
+    <div class="paper-font-body2">Destination Selector</div>
+    <paper-chips-input label="Add a Market" values="[[_computeMarkets(markets)]]"
+                       selected-values="{{selectedMarkets}}"></paper-chips-input>
+
+
+    <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
+
+    <paper-checkbox
+      checked="{{dataFilter.shareable}}">Public
+    </paper-checkbox>
+
+    <paper-input
+      id="settingsNameInput"
+      label="Settings Name"
+      value="{{dataFilter.name}}"
+      required
+      auto-validate
+      minlength="3"></paper-input>
+
+    <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
+
+  </div>
+</template>
+<script>
+  (function () {
+    'use strict';
+
+    Polymer({
+      is: 'graph-settings',
+
+      properties: {
+
+        airlines: {
+          type: Array,
+          notify: true
+        },
+
+        markets: {
+          type: Array,
+          notify: true
+        },
+
+        dataFilter: {
+          type: Object,
+          value: {
+            name: "",
+            shareable: false,
+            rangeFrom: null,
+            rangeTo: null,
+            axis: {
+              x: 0,
+              y: 0
+            },
+            filter: {
+              timestep: "",
+              airlines: [],
+              destinations: []
             }
           }
-        },
-
-        _applySetting: function(event) {
-          this.fire("apply-setting", this.dataFilter);
-        },
-
-        _saveSettings: function () {
-          if (this.$.settingsNameInput.invalid) {
-            return;
-          }
-          console.log(this.dataFilter);
-          this.fire("save-setting", this.dataFilter);
         }
-      })
-      ;
-    })();
-  </script>
+      },
+
+      _applySetting: function (event) {
+        this.fire("apply-setting", this.dataFilter);
+      },
+
+      _saveSettings: function () {
+        if (this.$.settingsNameInput.invalid) {
+          return;
+        }
+        console.log(this.dataFilter);
+        this.fire("save-setting", this.dataFilter);
+      },
+
+      _computeAirlines: function (airlines) {
+        return airlines.map(function (a) {
+          a.label = a.name;
+          return a;
+
+        });
+      },
+      _computeMarkets: function (markets) {
+        return markets.map(function (m) {
+          m.label = m.name;
+          return m;
+        });
+      }
+    })
+    ;
+  })();
+</script>
 </dom-module>
