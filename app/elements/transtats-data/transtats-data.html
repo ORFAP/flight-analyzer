@@ -72,7 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _settingChanged: function(newSettings) {
-        console.log("requested");
+        console.log(newSettings);
         this.$.postTable.body = newSettings;
         this.$.postTable.generateRequest();
       },

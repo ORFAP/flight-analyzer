@@ -9,6 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/paper-styles/shadow.html">
 <link rel="import" href="../graph-settings/graph-settings.html">
 <link rel="import" href="../flight-graph/flight-graph.html">
 <link rel="import" href="../settings-data/settings-data.html">
@@ -20,14 +24,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+
       graph-settings {
-        margin: 32px;
+        margin: 16px;
+        margin-top: 76px;
+        height: 100%;
+        overflow: auto;
+      }
+
+      app-drawer {
+        --app-drawer-width: 286px;
+        --app-drawer-content-container: {
+          @apply(--shadow-elevation-6dp);
+        };
       }
     </style>
-    <div class="layout horizontal">
-      <flight-graph table="[[table]]" class="flex"></flight-graph>
-      <graph-settings airlines="[[airlines]]" markets="[[markets]]" id="flightfilter"></graph-settings>
-    </div>
+    <app-drawer-layout>
+      <div>
+        <flight-graph table="[[table]]" class="flex"></flight-graph>
+        <paper-toggle-button checked="{{checked}}">Show Settings</paper-toggle-button>
+      </div>
+      <app-drawer opened="{{checked}}" align="end">
+        <graph-settings airlines="[[airlines]]" markets="[[markets]]" id="flightfilter"></graph-settings>
+      </app-drawer>
+    </app-drawer-layout>
   </template>
   <script>
     (function () {

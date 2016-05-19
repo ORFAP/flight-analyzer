@@ -29,58 +29,55 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       color: var(--accent-color);
     }
 
-    paper-date-picker-item {
-      max-width: 128px;
+    .section {
+      color: var(--primary-color);
+      text-align: left;
     }
 
     paper-chips-input {
-      width: 256px;
+      width: 100%;
     }
-
   </style>
   <div class="layout vertical">
 
-    <div class="paper-font-code2 self-end">
+    <div class="section paper-font-code2 self-end">
       Settings
       <iron-icon icon="settings"></iron-icon>
     </div>
 
 
-    <div class="paper-font-body2" class="layout horizontal">
-      <span>GRAPH</span>
+    <div class="section paper-font-body2">Graph</div>
 
-      <div class="layout vertical ">
-        <paper-date-picker-item date="{{dataFilter.rangeFrom}}" icon="get-app"
-                                placeholder="From"
-        ></paper-date-picker-item>
-        <paper-date-picker-item date="{{dataFilter.rangeTo}}" icon="file-upload"
-                                placeholder="Until"></paper-date-picker-item>
-      </div>
 
-      <div class="layout vertical">
-        <paper-dropdown-menu label="X-Axis">
-          <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
-            <paper-item enum-value="TIME">Time</paper-item>
-            <!-- TODO Additional setting for day of week, week in month etc -->
-            <paper-item enum-value="DESTINATION">Destination</paper-item>
-            <paper-item enum-value="AIRLINE">Airline</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
+    <div class="layout vertical">
 
-        <paper-dropdown-menu label="Y-Axis">
-          <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
-            <paper-item enum-value="FLIGHTS">Flights</paper-item>
-            <paper-item enum-value="PASSENGERS">Passengers</paper-item>
-            <paper-item enum-value="DELAYFREQ">Delays</paper-item>
-            <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
-            <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </div>
+      <paper-input type="date" label="From Date" value="{{dataFilter.rangeFrom}}"></paper-input>
+
+      <paper-input type="date" label="To Date" value="{{dataFilter.rangeTo}}"></paper-input>
+
+      <paper-dropdown-menu label="X-Axis">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
+          <paper-item enum-value="TIME">Time</paper-item>
+          <!-- TODO Additional setting for day of week, week in month etc -->
+          <paper-item enum-value="DESTINATION">Destination</paper-item>
+          <paper-item enum-value="AIRLINE">Airline</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-dropdown-menu label="Y-Axis">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
+          <paper-item enum-value="FLIGHTS">Flights</paper-item>
+          <paper-item enum-value="PASSENGERS">Passengers</paper-item>
+          <paper-item enum-value="DELAYFREQ">Delays</paper-item>
+          <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
+          <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
     </div>
 
-    <div class="paper-font-body2">SELECTORS</div>
+    <div class="section paper-font-body2">Selectors and Filters</div>
 
+    <div class="section paper-font-body1">Time Selector</div>
     <paper-dropdown-menu label="Time Selector">
       <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}" attr-for-selected="enum-value">
         <paper-item enum-value="DAY_OF_WEEK">Day of week</paper-item>
@@ -89,31 +86,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-listbox>
     </paper-dropdown-menu>
 
-
-    <div class="paper-font-body2">Airline Selector</div>
+    <div class="section paper-font-body1">Airline Selector</div>
     <paper-chips-input label="Add an Airline" values="[[_computeAirlines(airlines)]]"
                        selected-values="{{dataFilter.filter.airlines}}"></paper-chips-input>
 
-    <div class="paper-font-body2">Destination Selector</div>
+    <div class="section paper-font-body1">Destination Selector</div>
     <paper-chips-input label="Add a Market" values="[[_computeMarkets(markets)]]"
                        selected-values="{{dataFilter.filter.destinations}}"></paper-chips-input>
+  </div>
 
 
-    <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
+  <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
 
-    <paper-checkbox
-      checked="{{dataFilter.shareable}}">Public
-    </paper-checkbox>
+  <paper-checkbox
+    checked="{{dataFilter.shareable}}">Public
+  </paper-checkbox>
 
-    <paper-input
-      id="settingsNameInput"
-      label="Settings Name"
-      value="{{dataFilter.name}}"
-      required
-      auto-validate
-      minlength="3"></paper-input>
+  <paper-input
+    id="settingsNameInput"
+    label="Settings Name"
+    value="{{dataFilter.name}}"
+    required
+    auto-validate
+    minlength="3"></paper-input>
 
-    <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
+  <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
 
   </div>
 </template>
