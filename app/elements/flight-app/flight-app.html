@@ -52,11 +52,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/carbon-route/carbon-location.html">
 
 <!-- Add your elements here -->
-<link rel="import" href="../login-page/login-page.html">
-<link rel="import" href="../graph-page/graph-page.html">
-<link rel="import" href="../settings-page/settings-page.html">
-<link rel="import" href="../settings-data/settings-data.html">
-<link rel="import" href="../transtats-data/transtats-data.html">
+<link rel="import" href="../app-pages/login-page.html">
+<link rel="import" href="../app-pages/graph-page.html">
+<link rel="import" href="../app-pages/settings-page.html">
+<link rel="import" href="../data-elements/settings-data.html">
+<link rel="import" href="../data-elements/transtats-data.html">
 
 <dom-module id="flight-app">
   <template>
@@ -229,7 +229,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _applySettingHandler: function (e) {
           this.$.transtatsData._settingChanged(e.detail);
-          //this.set("setting",e.detail);
         }
         ,
 
