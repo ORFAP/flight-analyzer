@@ -19,7 +19,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-chips-input/paper-chips-input.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
-<dom-module id="graph-settings"">
+<!--
+Group of input fields and selectors to describe the settings a user can change to change the data to be plotted in the graph.
+
+@element graph-settings
+-->
+<dom-module id="graph-settings">
 <template>
   <style>
     :host {
@@ -95,11 +100,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="section main paper-font-body2">Selectors and Filters</div>
 
     <div class="section paper-font-body1">Airline Selector</div>
-    <paper-chips-input label="Add an Airline" values="[[_computeAirlines(airlines)]]"
+    <paper-chips-input label="Add an Airline" values="[[_computeForChips(airlines)]]"
                        selected-values="{{dataFilter.filter.airlines}}"></paper-chips-input>
 
     <div class="section paper-font-body1">Destination Selector</div>
-    <paper-chips-input label="Add a Market" values="[[_computeMarkets(markets)]]"
+    <paper-chips-input label="Add a Market" values="[[_computeForChips(markets)]]"
                        selected-values="{{dataFilter.filter.destinations}}"></paper-chips-input>
 
     <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
@@ -131,17 +136,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'graph-settings',
 
       properties: {
-
+        /**
+         * All available airlines.
+         */
         airlines: {
           type: Array,
           notify: true
         },
-
+        /**
+         * All available markets.
+         */
         markets: {
           type: Array,
           notify: true
         },
-
+        /**
+         * The settings object which can be stored in the backend as well as being used to get the new data to be plotted in the graph.
+         */
         dataFilter: {
           type: Object,
           value: {
@@ -162,6 +173,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      /**
+       * computes if a timestep is available for the currently selected quantiative value.
+       * @param selected currently selected quantiative value
+       * @returns {boolean} whether a timestep is available or not
+         * @private
+         */
       _computeIsAvailable: function (selected) {
         if (selected === "PASSENGERS") {
           this.set('dataFilter.filter.timestep', "MONTH");
@@ -170,10 +187,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return true;
       },
 
+      /**
+       * Fires an event which notifies the transtats-data-element to load the new graph data from the backend
+       * @param event
+       * @private
+         */
       _applySetting: function (event) {
         this.fire("apply-setting", this.dataFilter);
       },
 
+      /**
+       * Fires an event which notifies the settings-data-element to save the currently configured setting.
+       * @private
+         */
       _saveSettings: function () {
         if (this.$.settingsNameInput.invalid) {
           return;
@@ -182,17 +208,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.fire("save-setting", this.dataFilter);
       },
 
-      _computeAirlines: function (airlines) {
-        return airlines.map(function (a) {
-          a.label = a.name;
-          return a;
-        });
-      },
-
-      _computeMarkets: function (markets) {
-        return markets.map(function (m) {
-          m.label = m.name;
-          return m;
+      /**
+       * compute all airlines to be conform with the needed data-layout for the paper-chips-input
+       * @param elements the elements to be brought into the right format.
+       * @returns {*} elements in the right format.
+         * @private
+         */
+      _computeForChips: function (elements) {
+        return elements.map(function (e) {
+          e.label = e.name;
+          return e;
         });
       }
     })

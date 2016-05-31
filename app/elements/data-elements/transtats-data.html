@@ -10,6 +10,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="..\..\bower_components/polymer/polymer.html">
 
+<!--
+A simple elements which controls the access for all needed data from transtats which is stored in the backend.
+It can be used to receive all markets and airlines as well as retreiving the interpolated data which can be displayed in a graph.
+
+@element transtats-data
+-->
 <dom-module id="transtats-data">
   <template>
 
@@ -39,64 +45,107 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </template>
   <script>
-  (function() {
-    'use strict';
+    (function () {
+      'use strict';
 
-    Polymer({
-      is: 'transtats-data',
+      Polymer({
+        is: 'transtats-data',
 
-      properties: {
-        baseUrl: String,
-        markets: {
-          type: Array,
-          notify: true
+        properties: {
+          /**
+           * Base-URL of the backend to be called.
+           */
+          baseUrl: String,
+          /**
+           * List of all markets fetched from the backend.
+           */
+          markets: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * List of all airlines fetched from the backend.
+           */
+          airlines: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * Interpolated data for further analysis tasks.
+           */
+          table: {
+            type: Object,
+            notify: true
+          },
+          /**
+           * Currently applied settings object which will be used to receive the interpolated data.
+           */
+          setting: {
+            type: Object,
+            notify: true,
+            observer: "_settingChanged"
+          }
         },
-        airlines: {
-          type: Array,
-          notify: true
+
+        /**
+         * fetches the data when the website is loaded
+         */
+        ready: function () {
+          this.$.ajaxGetAirlines.generateRequest();
+          this.$.ajaxGetMarkets.generateRequest();
         },
-        table: {
-          type: Object,
-          notify: true
+
+        /**
+         * On change of the current settings the new data will be calculated and send back from the backend.
+         * @param newSettings
+         * @private
+         */
+        _settingChanged: function (newSettings) {
+          console.log(newSettings);
+          this.$.postTable.body = newSettings;
+          this.$.postTable.generateRequest();
         },
-        setting: {
-          type: Object,
-          notify: true,
-          observer: "_settingChanged"
+
+        /**
+         * On finishing the ajax-request this function gets called.
+         * @param event the ajax-event
+         * @private
+         */
+        _loadMarkets: function (event) {
+          var markets = event.detail.response._embedded.markets;
+          this.set('markets', markets);
+        },
+
+        /**
+         * On finishing the ajax-request this function gets called.
+         * @param event the ajax-event
+         * @private
+         */
+        _loadAirlines: function (event) {
+          var airlines = event.detail.response._embedded.airlines;
+          this.set('airlines', airlines);
+        },
+
+        /**
+         * On finishing the ajax-request this function gets called.
+         * @param event the ajax-event
+         * @private
+         */
+        _loadTable: function (event) {
+          var table = event.detail.response;
+          this.set('table', table);
+        },
+
+        /**
+         * Handles all occuring errors gracefully by showing the user a notification
+         * @param e the error that occured
+         * @private
+         */
+        _errorHandler: function (e) {
+          var message = e.detail.error.message == null ? "Can't load the data." : e.detail.error.message;
+          this.fire('show-toast', message);
         }
-      },
-
-      ready: function(){
-        this.$.ajaxGetAirlines.generateRequest();
-        this.$.ajaxGetMarkets.generateRequest();
-      },
-
-      _settingChanged: function(newSettings) {
-        console.log(newSettings);
-        this.$.postTable.body = newSettings;
-        this.$.postTable.generateRequest();
-      },
-
-      _loadMarkets: function(event) {
-        var markets = event.detail.response._embedded.markets;
-        this.set('markets', markets);
-      },
-
-      _loadAirlines: function(event) {
-        var airlines = event.detail.response._embedded.airlines;
-        this.set('airlines', airlines);
-      },
-
-      _loadTable: function(event) {
-        var table = event.detail.response;
-        this.set('table', table);
-      },
-
-      _errorHandler: function(e){
-        var message = e.detail.error.message == null ? "Can't load the data." : e.detail.error.message;
-        this.fire('show-toast', message);
-      }
-    });
-  })();
+      });
+    })();
   </script>
 </dom-module>
