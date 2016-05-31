@@ -100,7 +100,7 @@ Provides a simple landing page that is responsible for logins.
         /**
          * Function to sign in the user. Stores the username in a cookie and navigates to the main page of the app.
          * @param e Event from button click.
-           */
+         */
         signin: function (e) {
           document.cookie = "username=" + this.username;
           this.fire('navigate', 'graph');
@@ -110,7 +110,7 @@ Provides a simple landing page that is responsible for logins.
          * Login on pressing enter inside the text field.
          * @param e Event of the key press.
          * @private
-           */
+         */
         _checkForEnter: function (e) {
           if (e.keyCode == 13) {
             this.signin(e);
