@@ -11,6 +11,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
+<!--
+Provides a simple element for the storage of all settings (graph configurations).
+
+@element settings-data
+-->
 <dom-module id="settings-data">
   <template>
 
@@ -39,14 +44,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'settings-data',
 
         properties: {
+          /**
+           * The username of the active user.
+           */
           username: String,
+          /**
+           * The baseUrl for the API backend.
+           */
           baseUrl: String,
+          /**
+           * The stored settings.
+           */
           settings: {
             type: Array,
             notify: true
           }
         },
 
+        /**
+         * Save a new setting.
+         * @param setting The setting.
+         */
         save: function (setting) {
           setting.creator = this.username;
           var ajaxel = this.$.ajaxSaveSettings;
@@ -54,19 +72,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           ajaxel.generateRequest();
         },
 
+        /**
+         * Get all (reload) settings.
+         */
         getAll: function () {
           this.$.ajaxGetSettings.generateRequest();
         },
 
-        _responseHandlerSave: function (event) {
+        /**
+         * Send a notification for the success of saving a setting.
+         * @private
+         */
+        _responseHandlerSave: function () {
           this.fire("show-toast", "Successfully saved setting.");
         },
 
+        /**
+         * Update the settings for the server response.
+         * @param event A event containing the settings collection in HAL+JSON format.
+         * @private
+         */
         _responseHandlerLoad: function (event) {
           var content = event.detail.response._embedded.settings;
           this.set('settings', content);
         },
 
+        /**
+         * Handle a error and send a notification.
+         * @param e Event with the error message.
+         * @private
+         */
         _errorHandler: function (e) {
           var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
           this.fire('show-toast', message);

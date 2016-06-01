@@ -52,12 +52,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/carbon-route/carbon-location.html">
 
 <!-- Add your elements here -->
-<link rel="import" href="../login-page/login-page.html">
-<link rel="import" href="../graph-page/graph-page.html">
-<link rel="import" href="../settings-page/settings-page.html">
-<link rel="import" href="../settings-data/settings-data.html">
-<link rel="import" href="../transtats-data/transtats-data.html">
+<link rel="import" href="../app-pages/login-page.html">
+<link rel="import" href="../app-pages/graph-page.html">
+<link rel="import" href="../app-pages/settings-page.html">
+<link rel="import" href="../data-elements/settings-data.html">
+<link rel="import" href="../data-elements/transtats-data.html">
 
+<!--
+Provides a simple shell for the Flight Analyzer App.
+
+This element handles the basic layout, navigation and routing of the app.
+
+@element flight-app
+-->
 <dom-module id="flight-app">
   <template>
     <style>
@@ -172,10 +179,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'flight-app',
 
         properties: {
+          /**
+           * The base URL for the API of the Backend.
+           */
           base: {
             type: String,
             value: "http://192.168.99.100:8080"
           },
+          /**
+           * All available settings that can be loaded.
+           */
           settings: {
             type: Array,
             notify: true
@@ -194,6 +207,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           'navigate': '_navigateHandler'
         },
 
+        /**
+         * Redirect to login page, if no user cookie is set.
+         * @param page The string for the page key.
+         * @private
+         */
         _pageChanged: function (page) {
           var username = this._getCookie("username");
           if (username) {
@@ -204,57 +222,92 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-        closeDrawer: function (e) {
+        /**
+         * Close the layout drawer
+         */
+        closeDrawer: function () {
           this.$.drawer.close();
-        }
-        ,
+        },
 
-        _logout: function (e) {
+        /**
+         * Logout: Navigate to the Login page and remove the user cookie.
+         * @private
+         */
+        _logout: function () {
           this.$.loginpage.username = "";
           document.cookie = "username=";
           this.$.ironpages.selected = "";
-        }
-        ,
+        },
 
+        /**
+         * Return true, if the login page is currently opened.
+         * @returns {boolean} true, if on the login page.
+         * @private
+         */
         _isLoginpage: function () {
-          console.log(this.$.ironpages.selected);
           return this.$.ironpages.selected === "";
-        }
-        ,
+        },
 
-        _closeToast: function (e) {
+        /**
+         * Close the toast message.
+         * @private
+         */
+        _closeToast: function () {
           this.$.toast.hide()
-        }
-        ,
+        },
 
+        /**
+         * Apply a setting to update the graph.
+         * @param e An event with the new setting as detail.
+         * @private
+         */
         _applySettingHandler: function (e) {
           this.$.transtatsData._settingChanged(e.detail);
-          //this.set("setting",e.detail);
-        }
-        ,
+        },
 
+        /**
+         * Save a setting.
+         * @param e An event with the setting to save as detail.
+         * @private
+         */
         _saveSettingHandler: function (e) {
           this.$.settingsData.save(e.detail);
-        }
-        ,
+        },
 
-        _loadSettingsHandler: function (e) {
+        /**
+         * (Re-) Load all settings.
+         * @private
+         */
+        _loadSettingsHandler: function () {
           this.$.settingsData.getAll();
-        }
-        ,
+        },
 
+        /**
+         * Show a notification on the shell.
+         * @param e An event with the notification message as detail.
+         * @private
+         */
         _showToast: function (e) {
           var toast = this.$.toast;
           toast.text = e.detail;
           toast.show();
-        }
-        ,
+        },
 
+        /**
+         * Navigate to a specific page by event.
+         * @param e An event with the page key as detail.
+         * @private
+         */
         _navigateHandler: function (e) {
           this.$.ironpages.selected = e.detail;
-        }
-        ,
+        },
 
+        /**
+         * Get a cookie.
+         * @param name The name of the cookie.
+         * @returns {string} The content of the cookie.
+         * @private
+         */
         _getCookie: function (name) {
           var value = "; " + document.cookie;
           var parts = value.split("; " + name + "=");

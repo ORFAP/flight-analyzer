@@ -11,6 +11,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="..\..\bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 
+
+<!--
+Provides a simple landing page that is responsible for logins.
+
+@element login-page
+-->
 <dom-module id="login-page">
   <template>
     <style>
@@ -73,11 +79,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'login-page',
 
         properties: {
+          /**
+           * Name of the current user.
+           */
           username: {
             type: String,
             value: "",
             notify: true
           },
+          /**
+           * Reference to the currently visible page to disable the background video on leaving the login page.
+           */
           currentPage: {
             type: String,
             notify: true,
@@ -85,17 +97,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
+        /**
+         * Function to sign in the user. Stores the username in a cookie and navigates to the main page of the app.
+         * @param e Event from button click.
+         */
         signin: function (e) {
           document.cookie = "username=" + this.username;
           this.fire('navigate', 'graph');
         },
 
+        /**
+         * Login on pressing enter inside the text field.
+         * @param e Event of the key press.
+         * @private
+         */
         _checkForEnter: function (e) {
           if (e.keyCode == 13) {
             this.signin(e);
           }
         },
 
+        /**
+         * Play only when on login page.
+         */
         _stopVideo: function () {
           if (this.currentPage == "") {
             this.$.bgvid.play();
@@ -104,6 +128,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
+        /**
+         * Loop the background-video on browsers that don't support the "loop"-tag.
+         * @private
+         */
         _restartVideo: function (e) {
           this.$.bgvid.load();
           this.$.bgvid.play();

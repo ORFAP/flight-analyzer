@@ -19,184 +19,209 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-chips-input/paper-chips-input.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
-<dom-module id="graph-settings"">
-<template>
-  <style>
-    :host {
-      display: block;
-    }
+<!--
+Group of input fields and selectors to describe the settings a user can change to change the data to be plotted in the graph.
 
-    .applybtn {
-      color: var(--accent-color);
-    }
+@element graph-settings
+-->
+<dom-module id="graph-settings">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
 
-    .section {
-      color: var(--primary-color);
-    }
+      .applybtn {
+        color: var(--accent-color);
+      }
 
-    .section.main {
-      border-bottom: 1px solid var(--primary-color);
-      margin-bottom: 8px;
-    }
+      .section {
+        color: var(--primary-color);
+      }
 
-    paper-chips-input {
-      width: 100%;
-    }
+      .section.main {
+        border-bottom: 1px solid var(--primary-color);
+        margin-bottom: 8px;
+      }
 
-  </style>
+      paper-chips-input {
+        width: 100%;
+      }
 
-  <div class="layout vertical" align="left">
+    </style>
 
-    <div class="section paper-font-code2 self-end">
-      Settings
-      <iron-icon icon="settings"></iron-icon>
+    <div class="layout vertical" align="left">
+
+      <div class="section paper-font-code2 self-end">
+        Settings
+        <iron-icon icon="settings"></iron-icon>
+      </div>
+
+
+      <div class="section main paper-font-body2">Graph</div>
+
+
+      <paper-input type="date" label="From Date"
+                   value="{{dataFilter.rangeFrom}}"></paper-input>
+
+      <paper-input type="date" label="To Date"
+                   value="{{dataFilter.rangeTo}}"></paper-input>
+
+      <paper-dropdown-menu label="Qualitative Value">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
+          <paper-item enum-value="TIME">Time</paper-item>
+          <!-- TODO Additional setting for day of week, week in month etc -->
+          <paper-item enum-value="DESTINATION">Destination</paper-item>
+          <paper-item enum-value="AIRLINE">Airline</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-dropdown-menu label="Quantitative Value">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
+          <paper-item enum-value="FLIGHTS">Flights</paper-item>
+          <paper-item enum-value="PASSENGERS">Passengers</paper-item>
+          <paper-item enum-value="DELAYFREQ">Delays</paper-item>
+          <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
+          <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-dropdown-menu label="Time Step">
+        <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}"
+                       attr-for-selected="enum-value">
+          <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="DAY_OF_WEEK">Day of week
+          </paper-item>
+          <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="WEEK">Week</paper-item>
+          <paper-item enum-value="MONTH">Month</paper-item>
+          <paper-item enum-value="YEAR">Year</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <div class="section main paper-font-body2">Selectors and Filters</div>
+
+      <div class="section paper-font-body1">Airline Selector</div>
+      <paper-chips-input label="Add an Airline" values="[[_computeForChips(airlines)]]"
+                         selected-values="{{dataFilter.filter.airlines}}"></paper-chips-input>
+
+      <div class="section paper-font-body1">Destination Selector</div>
+      <paper-chips-input label="Add a Market" values="[[_computeForChips(markets)]]"
+                         selected-values="{{dataFilter.filter.destinations}}"></paper-chips-input>
+
+      <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
+
+      <div class="section main paper-font-body2">Save Setting</div>
+
+      <paper-checkbox
+        checked="{{dataFilter.shareable}}">Public
+      </paper-checkbox>
+
+      <paper-input
+        id="settingsNameInput"
+        label="Settings Name"
+        value="{{dataFilter.name}}"
+        required
+        auto-validate
+        minlength="3"></paper-input>
+
+      <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
     </div>
 
 
-    <div class="section main paper-font-body2">Graph</div>
+  </template>
+  <script>
+    (function () {
+      'use strict';
 
+      Polymer({
+        is: 'graph-settings',
 
-    <paper-input type="date" label="From Date"
-                 value="{{dataFilter.rangeFrom}}"></paper-input>
-
-    <paper-input type="date" label="To Date"
-                 value="{{dataFilter.rangeTo}}"></paper-input>
-
-    <paper-dropdown-menu label="Qualitative Value">
-      <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.x}}" attr-for-selected="enum-value">
-        <paper-item enum-value="TIME">Time</paper-item>
-        <!-- TODO Additional setting for day of week, week in month etc -->
-        <paper-item enum-value="DESTINATION">Destination</paper-item>
-        <paper-item enum-value="AIRLINE">Airline</paper-item>
-      </paper-listbox>
-    </paper-dropdown-menu>
-
-    <paper-dropdown-menu label="Quantitative Value">
-      <paper-listbox class="dropdown-content" selected="{{dataFilter.axis.y}}" attr-for-selected="enum-value">
-        <paper-item enum-value="FLIGHTS">Flights</paper-item>
-        <paper-item enum-value="PASSENGERS">Passengers</paper-item>
-        <paper-item enum-value="DELAYFREQ">Delays</paper-item>
-        <paper-item enum-value="AVGDELAY">Delay Duration</paper-item>
-        <paper-item enum-value="CANCELLATIONS">Cancellations</paper-item>
-      </paper-listbox>
-    </paper-dropdown-menu>
-
-    <paper-dropdown-menu label="Time Step">
-      <paper-listbox class="dropdown-content" selected="{{dataFilter.filter.timestep}}"
-                     attr-for-selected="enum-value">
-        <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="DAY_OF_WEEK">Day of week
-        </paper-item>
-        <paper-item hidden="{{!_computeIsAvailable(dataFilter.axis.y)}}" enum-value="WEEK">Week</paper-item>
-        <paper-item enum-value="MONTH">Month</paper-item>
-        <paper-item enum-value="YEAR">Year</paper-item>
-      </paper-listbox>
-    </paper-dropdown-menu>
-
-    <div class="section main paper-font-body2">Selectors and Filters</div>
-
-    <div class="section paper-font-body1">Airline Selector</div>
-    <paper-chips-input label="Add an Airline" values="[[_computeAirlines(airlines)]]"
-                       selected-values="{{dataFilter.filter.airlines}}"></paper-chips-input>
-
-    <div class="section paper-font-body1">Destination Selector</div>
-    <paper-chips-input label="Add a Market" values="[[_computeMarkets(markets)]]"
-                       selected-values="{{dataFilter.filter.destinations}}"></paper-chips-input>
-
-    <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
-
-    <div class="section main paper-font-body2">Save Setting</div>
-
-    <paper-checkbox
-      checked="{{dataFilter.shareable}}">Public
-    </paper-checkbox>
-
-    <paper-input
-      id="settingsNameInput"
-      label="Settings Name"
-      value="{{dataFilter.name}}"
-      required
-      auto-validate
-      minlength="3"></paper-input>
-
-    <paper-button raised disabled="[[!dataFilter.name]]" on-tap="_saveSettings">Save</paper-button>
-  </div>
-
-
-</template>
-<script>
-  (function () {
-    'use strict';
-
-    Polymer({
-      is: 'graph-settings',
-
-      properties: {
-
-        airlines: {
-          type: Array,
-          notify: true
-        },
-
-        markets: {
-          type: Array,
-          notify: true
-        },
-
-        dataFilter: {
-          type: Object,
-          value: {
-            name: "",
-            shareable: false,
-            rangeFrom: "2015-01-01",
-            rangeTo: "2015-12-01",
-            axis: {
-              x: "TIME",
-              y: "FLIGHTS"
-            },
-            filter: {
-              timestep: "MONTH",
-              airlines: [],
-              destinations: []
+        properties: {
+          /**
+           * All available airlines.
+           */
+          airlines: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * All available markets.
+           */
+          markets: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * The settings object which can be stored in the backend as well as being used to get the new data to be plotted in the graph.
+           */
+          dataFilter: {
+            type: Object,
+            value: {
+              name: "",
+              shareable: false,
+              rangeFrom: "2015-01-01",
+              rangeTo: "2015-12-01",
+              axis: {
+                x: "TIME",
+                y: "FLIGHTS"
+              },
+              filter: {
+                timestep: "MONTH",
+                airlines: [],
+                destinations: []
+              }
             }
           }
+        },
+
+        /**
+         * computes if a timestep is available for the currently selected quantiative value.
+         * @param selected currently selected quantiative value
+         * @returns {boolean} whether a timestep is available or not
+         * @private
+         */
+        _computeIsAvailable: function (selected) {
+          if (selected === "PASSENGERS") {
+            this.set('dataFilter.filter.timestep', "MONTH");
+            return false;
+          }
+          return true;
+        },
+
+        /**
+         * Fires an event which notifies the transtats-data-element to load the new graph data from the backend
+         * @param event
+         * @private
+         */
+        _applySetting: function (event) {
+          this.fire("apply-setting", this.dataFilter);
+        },
+
+        /**
+         * Fires an event which notifies the settings-data-element to save the currently configured setting.
+         * @private
+         */
+        _saveSettings: function () {
+          if (this.$.settingsNameInput.invalid) {
+            return;
+          }
+          console.log(this.dataFilter);
+          this.fire("save-setting", this.dataFilter);
+        },
+
+        /**
+         * compute all airlines to be conform with the needed data-layout for the paper-chips-input
+         * @param elements the elements to be brought into the right format.
+         * @returns {*} elements in the right format.
+         * @private
+         */
+        _computeForChips: function (elements) {
+          return elements.map(function (e) {
+            e.label = e.name;
+            return e;
+          });
         }
-      },
-
-      _computeIsAvailable: function (selected) {
-        if (selected === "PASSENGERS") {
-          this.set('dataFilter.filter.timestep', "MONTH");
-          return false;
-        }
-        return true;
-      },
-
-      _applySetting: function (event) {
-        this.fire("apply-setting", this.dataFilter);
-      },
-
-      _saveSettings: function () {
-        if (this.$.settingsNameInput.invalid) {
-          return;
-        }
-        console.log(this.dataFilter);
-        this.fire("save-setting", this.dataFilter);
-      },
-
-      _computeAirlines: function (airlines) {
-        return airlines.map(function (a) {
-          a.label = a.name;
-          return a;
-        });
-      },
-
-      _computeMarkets: function (markets) {
-        return markets.map(function (m) {
-          m.label = m.name;
-          return m;
-        });
-      }
-    })
-    ;
-  })();
-</script>
+      })
+      ;
+    })();
+  </script>
 </dom-module>

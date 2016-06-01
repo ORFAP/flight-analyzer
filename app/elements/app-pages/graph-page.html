@@ -15,9 +15,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-styles/shadow.html">
 <link rel="import" href="../graph-settings/graph-settings.html">
 <link rel="import" href="../flight-graph/flight-graph.html">
-<link rel="import" href="../settings-data/settings-data.html">
+<link rel="import" href="../data-elements/settings-data.html">
 
+<!--
+Provides a simple page to show the graph for the statistics and all controls to configure it.
 
+@element graph-page
+-->
 <dom-module id="graph-page">
   <template>
     <style>
@@ -73,11 +77,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'graph-page',
 
         properties: {
+          /**
+           * List of all airlines from transtats. Used for filtering/selecting.
+           */
           airlines: Array,
+          /**
+           * List of all markets from transtats. Used for filtering/selecting.
+           */
           markets: Array,
+          /**
+           * Calculated data from transtats to be used in the graph.
+           */
           table: Object
         },
 
+        /**
+         * Change icon of the drawer toggle button depending on state of the drawer.
+         * @param bool State of the drawer. true if open.
+         * @returns {icon} The name of the icon to be used.
+           * @private
+           */
         _computeIcon: function (bool) {
           if (bool) {
             return "chevron-right";
@@ -86,6 +105,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
+        /**
+         * Toggles the drawer state on press of the button.
+         * @private
+           */
         _toggleDrawer: function () {
           this.$.settingsDrawer.toggle();
         }

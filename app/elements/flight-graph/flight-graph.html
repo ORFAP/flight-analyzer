@@ -15,6 +15,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="chartjs-import.html">
 
+<!--
+A graph-element which uses the chart.js-libary in order to display graph data. The supplied data to be plotted gets fetched from the backend
+via the transtats-data-element.
+
+@element flight-graph
+-->
 <dom-module id="flight-graph">
   <template>
     <style>
@@ -56,6 +62,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'flight-graph',
         properties: {
+          /**
+           * The interpolated data to be plotted.
+           */
           table: {
             type: Object,
             value: function () {
@@ -64,6 +73,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             observer: '_tableChanged',
             notify: true
           },
+          /**
+           * Different colors for maximum 15 plotted lines
+           */
           colors: {
             type: Array,
             value: [
@@ -84,9 +96,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               "#ff9800"  // Orange 500
             ]
           },
+          /**
+           * The chart.js-Object for reference.
+           */
           chart: Object
         },
 
+        /**
+         * When new data is available to get plotted this function gets called an plots the new data.
+         * @param newTable The new data.
+         * @private
+         */
         _tableChanged: function (newTable) {
           if (!newTable) {
             return;
@@ -149,6 +169,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
         },
 
+        /**
+         * Creates the datasets which are needed for the chart.js library.
+         * @param data data to be converted in the correct form for the chart.js-library.
+         * @returns {Array} dataset-element for use in chart.js chart
+         * @private
+         */
         _createDatasets: function (data) {
           var dataset = [];
 
