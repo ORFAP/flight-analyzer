@@ -178,13 +178,13 @@ via the transtats-data-element.
         _createDatasets: function (data) {
           var dataset = [];
 
-          if (data.data.length > 15) {
-            this.fire("show-toast", "More than 15 elements. Only first 15 can be shown.");
+          if (Object.keys(data.data).length > 15) {
+            this.fire('show-toast', "More than 15 elements. Only first 15 can be shown.");
           }
 
           var counter = 0;
           for (var dataElement in data.data) {
-            if (counter <= 15) {
+            if (counter <= 14) {
               dataset.push({
                 label: dataElement,
                 backgroundColor: this.colors[counter],
