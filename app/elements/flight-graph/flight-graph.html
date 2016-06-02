@@ -130,7 +130,7 @@ via the transtats-data-element.
 
             datasets = [
               {
-                label: 'Date',
+                label: newTable.y,
                 backgroundColor: this.colors[0],
                 data: dataValues
               }
@@ -179,7 +179,7 @@ via the transtats-data-element.
           var dataset = [];
 
           if (data.data.length > 15) {
-            this.fire("show-toast", "More than 15 selectors active. Only first 15 can be shown.");
+            this.fire("show-toast", "More than 15 elements. Only first 15 can be shown.");
           }
 
           var counter = 0;
