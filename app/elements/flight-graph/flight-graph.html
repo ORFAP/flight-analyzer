@@ -178,9 +178,6 @@ via the transtats-data-element.
         _createDatasets: function (data) {
           var dataset = [];
 
-
-          console.log(Object.keys(data.data));
-
           if (Object.keys(data.data).length > 15) {
             this.fire('show-toast', "More than 15 elements. Only first 15 can be shown.");
           }

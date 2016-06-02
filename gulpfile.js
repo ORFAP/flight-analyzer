@@ -18,6 +18,7 @@ gulp.task('build', function () {
   return gulp.src('app/index.html')
     .pipe(polybuild({suffix: ''}))
     .pipe(gulp.src('app/bower_components*/font-roboto/fonts/**'))
+    .pipe(gulp.src('app/images*/**'))
     .pipe(gulp.dest('./dist'));
 });
 
@@ -26,10 +27,8 @@ require('web-component-tester').gulp.init(gulp);
 gulp.task('build-watch', ['build'], browserSync.reload);
 gulp.task('serve:dist', ['build'], function () {
   browserSync.init({
-    server: {baseDir: "./app/"},
+    server: {baseDir: "./dist/"},
     middleware: [history()]
   });
-  gulp.watch("app/elements/**/*.html", ['build']);
-  gulp.watch("app/index.html", ['build']);
 });
 
