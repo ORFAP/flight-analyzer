@@ -142,8 +142,8 @@ This element handles the basic layout, navigation and routing of the app.
         </paper-menu>
       </app-drawer>
       <app-header-layout>
-        <app-header id="main-header" fixed shadow>
-          <app-toolbar hidden="[[!routeData.page]]">
+        <app-header hidden$="[[!routeData.page]]" id="main-header" fixed shadow>
+          <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div title class="paper-font-title" spacer>Flight Analyzer</div>
             <span>[[username]]</span>
