@@ -30,6 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 
 <!-- Uncomment next block to enable Service Worker Support (2/2) -->
 <!--
@@ -106,6 +107,12 @@ This element handles the basic layout, navigation and routing of the app.
         background-color: var(--primary-background-color);
       }
 
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--accent-color);
+        --paper-progress-container-color: var(--primary-color);
+      }
+
       @media (min-width: 601px) {
         iron-pages {
           padding: 48px 64px;
@@ -143,6 +150,7 @@ This element handles the basic layout, navigation and routing of the app.
             <paper-icon-button icon="social:share"></paper-icon-button>
             <paper-icon-button on-tap="_logout" icon="exit-to-app"></paper-icon-button>
           </app-toolbar>
+          <paper-progress indeterminate="[[active]]"></paper-progress>
         </app-header>
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
@@ -157,14 +165,16 @@ This element handles the basic layout, navigation and routing of the app.
       id="settingsData"
       base-url="[[base]]"
       username="[[username]]"
-      settings="{{settings}}"></settings-data>
+      settings="{{settings}}"
+      active="{{active}}"></settings-data>
     <transtats-data
       id="transtatsData"
       base-url="[[base]]"
       airlines="{{airlines}}"
       markets="{{markets}}"
       table="{{table}}"
-      setting="[[setting]]"></transtats-data>
+      setting="[[setting]]"
+      active="{{active}}"></transtats-data>
 
     <paper-toast id="toast">
       <paper-button class="toast-hide-button" tabindex="0" on-tap="_closeToast">OK</paper-button>
@@ -184,7 +194,7 @@ This element handles the basic layout, navigation and routing of the app.
            */
           base: {
             type: String,
-            value: "http://10.28.2.166/api/"
+            value: "http://192.168.99.100:8080/"
           },
           /**
            * All available settings that can be loaded.
@@ -313,6 +323,8 @@ This element handles the basic layout, navigation and routing of the app.
           var parts = value.split("; " + name + "=");
           if (parts.length == 2) return parts.pop().split(";").shift();
         }
+
+
       })
       ;
     })();
