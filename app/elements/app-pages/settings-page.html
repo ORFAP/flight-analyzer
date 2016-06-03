@@ -138,11 +138,18 @@ Provides a simple page to display and allow the load of all stored graph configu
           return '';
         },
 
-        _filter: function (filters, filter) {
+        /**
+         * Filter method for search-bar on top of the page.
+         * @param settings Settings to be filtered.
+         * @param filter Current value of the searchbar
+         * @returns {*} List of settings filtered by filter.
+         * @private
+         */
+        _filter: function (settings, filter) {
           if (!filter || (filter = filter.trim()).length === 0) {
-            return filters;
+            return settings;
           }
-          return filters.filter(function (item) {
+          return settings.filter(function (item) {
             var filtersubstring = filter.toLowerCase();
             var namestring = item.name.toLowerCase();
             var creatorstring = item.creator.toLowerCase();
@@ -150,10 +157,18 @@ Provides a simple page to display and allow the load of all stored graph configu
           });
         },
 
+        /**
+         * Do i really need to explain this?
+         */
         _isEmpty: function (arr) {
           return arr.length == 0;
         },
 
+        /**
+         * Load the selected setting.
+         * @param e ClickEvent of Floating Action Button.
+         * @private
+         */
         _select: function (e) {
           var flightfilter = document.querySelector("#flightfilter");
           flightfilter.dataFilter = this.selectedFilter;
