@@ -21,7 +21,7 @@ Provides a simple element for the storage of all settings (graph configurations)
 
     <iron-ajax
       id="ajaxGetSettings"
-      url="[[baseUrl]]/settings"
+      url="[[baseUrl]]/settings/search/findByCreatorContainingIgnoreCaseOrShareableTrue"
       on-response="_responseHandlerLoad"
       on-error="_errorHandler"
       verbose></iron-ajax>
@@ -82,6 +82,7 @@ Provides a simple element for the storage of all settings (graph configurations)
          */
         getAll: function () {
           this.active = true;
+          this.$.ajaxGetSettings.params = {name: this.username};
           this.$.ajaxGetSettings.generateRequest();
         },
 
