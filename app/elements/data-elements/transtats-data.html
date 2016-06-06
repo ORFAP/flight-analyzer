@@ -24,6 +24,7 @@ It can be used to receive all markets and airlines as well as retreiving the int
       url="[[baseUrl]]/airlines"
       on-response="_loadAirlines"
       on-error="_errorHandler"
+      loading="{{active}}"
       verbose></iron-ajax>
 
     <iron-ajax
@@ -31,6 +32,7 @@ It can be used to receive all markets and airlines as well as retreiving the int
       url="[[baseUrl]]/markets"
       on-response="_loadMarkets"
       on-error="_errorHandler"
+      loading="{{active}}"
       verbose></iron-ajax>
 
     <iron-ajax
@@ -41,6 +43,7 @@ It can be used to receive all markets and airlines as well as retreiving the int
       content-type="application/json"
       on-response="_loadTable"
       on-error="_errorHandler"
+      loading="{{active}}"
       verbose></iron-ajax>
 
   </template>
@@ -95,7 +98,6 @@ It can be used to receive all markets and airlines as well as retreiving the int
          * fetches the data when the website is loaded
          */
         ready: function () {
-          this.active = true;
           this.$.ajaxGetAirlines.generateRequest();
           this.$.ajaxGetMarkets.generateRequest();
         },
@@ -106,7 +108,6 @@ It can be used to receive all markets and airlines as well as retreiving the int
          * @private
          */
         _settingChanged: function (newSettings) {
-          this.active = true;
           this.$.postTable.body = newSettings;
           this.$.postTable.generateRequest();
         },
@@ -117,7 +118,6 @@ It can be used to receive all markets and airlines as well as retreiving the int
          * @private
          */
         _loadMarkets: function (event) {
-          this.active = false;
           var markets = event.detail.response._embedded.markets;
           this.set('markets', markets);
         },
@@ -128,7 +128,6 @@ It can be used to receive all markets and airlines as well as retreiving the int
          * @private
          */
         _loadAirlines: function (event) {
-          this.active = false;
           var airlines = event.detail.response._embedded.airlines;
           this.set('airlines', airlines);
         },
@@ -139,7 +138,6 @@ It can be used to receive all markets and airlines as well as retreiving the int
          * @private
          */
         _loadTable: function (event) {
-          this.active = false;
           var table = event.detail.response;
           this.set('table', table);
         },
@@ -150,7 +148,6 @@ It can be used to receive all markets and airlines as well as retreiving the int
          * @private
          */
         _errorHandler: function (e) {
-          this.active = false;
           var message = e.detail.error.message == null ? "Can't load the data." : e.detail.error.message;
           this.fire('show-toast', message);
         }

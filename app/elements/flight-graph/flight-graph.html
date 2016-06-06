@@ -108,6 +108,7 @@ via the transtats-data-element.
          * @private
          */
         _tableChanged: function (newTable) {
+          // exit if no data is provided
           if (!newTable) {
             return;
           }
@@ -121,6 +122,7 @@ via the transtats-data-element.
           var labels = [];
           var datasets = [];
 
+          // The data differs wether TIME or AIRLINE/DESTINATION is selected as z-value. Calculate the labels and datasets depending on this.
           if (newTable.z === "TIME") {
             var dataValues = [];
             for (var day in newTable.data) {
@@ -141,6 +143,7 @@ via the transtats-data-element.
           }
 
           var ctx = this.$.chart.getContext("2d");
+          // create the chart object with the calculated labels and datasets
           this.chart = new Chart(ctx, {
             type: 'bar',
             data: {

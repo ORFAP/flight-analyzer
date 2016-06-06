@@ -24,6 +24,7 @@ Provides a simple element for the storage of all settings (graph configurations)
       url="[[baseUrl]]/settings/search/findByCreatorContainingIgnoreCaseOrShareableTrue"
       on-response="_responseHandlerLoad"
       on-error="_errorHandler"
+      loading="{{active}}"
       verbose></iron-ajax>
 
     <iron-ajax
@@ -33,6 +34,7 @@ Provides a simple element for the storage of all settings (graph configurations)
       content-type="application/json"
       on-error="_errorHandler"
       on-response="_responseHandlerSave"
+      loading="{{active}}"
       verbose></iron-ajax>
 
   </template>
@@ -70,7 +72,6 @@ Provides a simple element for the storage of all settings (graph configurations)
          * @param setting The setting.
          */
         save: function (setting) {
-          this.active = true;
           setting.creator = this.username;
           var ajaxel = this.$.ajaxSaveSettings;
           ajaxel.body = setting;
@@ -81,7 +82,6 @@ Provides a simple element for the storage of all settings (graph configurations)
          * Get all (reload) settings.
          */
         getAll: function () {
-          this.active = true;
           this.$.ajaxGetSettings.params = {name: this.username};
           this.$.ajaxGetSettings.generateRequest();
         },
@@ -91,7 +91,6 @@ Provides a simple element for the storage of all settings (graph configurations)
          * @private
          */
         _responseHandlerSave: function () {
-          this.active = false;
           this.fire("show-toast", "Successfully saved setting.");
         },
 
@@ -101,7 +100,6 @@ Provides a simple element for the storage of all settings (graph configurations)
          * @private
          */
         _responseHandlerLoad: function (event) {
-          this.active = false;
           var content = event.detail.response._embedded.settings;
           this.set('settings', content);
         },
@@ -112,7 +110,6 @@ Provides a simple element for the storage of all settings (graph configurations)
          * @private
          */
         _errorHandler: function (e) {
-          this.active = false;
           var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
           this.fire('show-toast', message);
         }
