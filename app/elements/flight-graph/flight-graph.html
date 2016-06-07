@@ -35,6 +35,8 @@ via the transtats-data-element.
         border-radius: 2px;
         padding-left: 8px;
         padding-bottom: 8px;
+
+        height: 600px;
       }
 
       iron-icon {
@@ -46,7 +48,11 @@ via the transtats-data-element.
 
       #chart {
         width: 100%;
-        height: 600px;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        left: 0;
+        top: 0;
       }
 
     </style>
@@ -114,7 +120,7 @@ via the transtats-data-element.
         listeners: {
           'iron-resize': '_onIronResize'
         },
-        _onIronResize: function(e) {
+        _onIronResize: function (e) {
           console.log("resize");
           Plotly.Plots.resize(this.$.chart);
         },
