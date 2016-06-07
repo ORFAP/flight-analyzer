@@ -101,6 +101,11 @@ Provides a simple element for the storage of all settings (graph configurations)
          */
         _responseHandlerLoad: function (event) {
           var content = event.detail.response._embedded.settings;
+          content.forEach(function(setting){
+            setting.rangeFrom = setting.rangeFrom.split("T")[0];
+            setting.rangeTo = setting.rangeTo.split("T")[0];
+          });
+          console.log(content);
           this.set('settings', content);
         },
 
