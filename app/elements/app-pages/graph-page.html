@@ -29,45 +29,16 @@ Provides a simple page to show the graph for the statistics and all controls to 
         display: block;
       }
 
-      #drawercontent {
-        margin-left: 16px;
-        margin-right: 16px;
-        height: 100%;
-        overflow: auto;
+      flight-graph {
+        margin-right: 32px;
       }
 
-      app-drawer {
-        margin-top: 80px;
-        --app-drawer-width: 286px;
-        --app-drawer-content-container: {
-          @apply(--shadow-elevation-6dp);
-        };
-      }
 
-      #drawerToggle {
-        visibility: visible !important;
-        position: absolute;
-        top: 250px;
-        right: 280px;
-        background-color: var(--primary-color);
-        color: white;
-        width: 38px;
-        height: 38px;
-        @apply(--shadow-elevation-2dp);
-      }
     </style>
-    <app-drawer-layout>
       <div class="layout horizontal">
         <flight-graph table="[[table]]" class="flex"></flight-graph>
+        <graph-settings airlines="[[airlines]]" markets="[[markets]]" id="flightfilter"></graph-settings>
       </div>
-      <app-drawer opened="{{opened}}" align="end" id="settingsDrawer">
-        <div id="drawercontent">
-          <paper-icon-button on-tap="_toggleDrawer" id="drawerToggle"
-                             icon="[[_computeIcon(opened)]]"></paper-icon-button>
-          <graph-settings airlines="[[airlines]]" markets="[[markets]]" id="flightfilter"></graph-settings>
-        </div>
-      </app-drawer>
-    </app-drawer-layout>
   </template>
   <script>
     (function () {
@@ -89,28 +60,6 @@ Provides a simple page to show the graph for the statistics and all controls to 
            * Calculated data from transtats to be used in the graph.
            */
           table: Object
-        },
-
-        /**
-         * Change icon of the drawer toggle button depending on state of the drawer.
-         * @param bool State of the drawer. true if open.
-         * @returns {icon} The name of the icon to be used.
-           * @private
-           */
-        _computeIcon: function (bool) {
-          if (bool) {
-            return "chevron-right";
-          } else {
-            return "chevron-left";
-          }
-        },
-
-        /**
-         * Toggles the drawer state on press of the button.
-         * @private
-           */
-        _toggleDrawer: function () {
-          this.$.settingsDrawer.toggle();
         }
 
       });
