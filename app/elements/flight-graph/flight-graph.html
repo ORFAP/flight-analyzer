@@ -74,8 +74,16 @@ via the transtats-data-element.
         attached: function () {
           Plotly.plot(this.$.chart, [{
             x: [1, 2, 3, 4, 5],
-            y: [1, 2, 4, 8, 16]
-          }], {});
+            y: [1, 2, 4, 8, 16],
+            type: "bar"
+          }], {
+            margin: {
+              t: 8,
+              l: 36,
+              r: 8,
+              b: 36
+            }
+          }, {displayModeBar: false});
         },
         properties: {
           /**
