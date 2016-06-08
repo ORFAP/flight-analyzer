@@ -61,10 +61,10 @@ Group of input fields and selectors to describe the settings a user can change t
       <div class="section main paper-font-body2">Graph</div>
 
 
-      <paper-input type="date" label="From Date"
+      <paper-input id="inputFrom" type="date" label="From Date"
                    value="{{dataFilter.rangeFrom}}"></paper-input>
 
-      <paper-input type="date" label="To Date"
+      <paper-input id="inputTo" type="date" label="To Date"
                    value="{{dataFilter.rangeTo}}"></paper-input>
 
       <paper-dropdown-menu label="Qualitative Value">
@@ -193,7 +193,10 @@ Group of input fields and selectors to describe the settings a user can change t
          * @private
          */
         _applySetting: function (event) {
-          this.fire("apply-setting", this.dataFilter);
+          var setting = this._getSettingFromForm();
+          if (setting) {
+            this.fire("apply-setting", setting);
+          }
         },
 
         /**
@@ -204,8 +207,37 @@ Group of input fields and selectors to describe the settings a user can change t
           if (this.$.settingsNameInput.invalid) {
             return;
           }
-          console.log(this.dataFilter);
-          this.fire("save-setting", this.dataFilter);
+          var setting = this._getSettingFromForm();
+          if (setting) {
+            this.fire("save-setting", setting);
+          }
+        },
+
+        _getSettingFromForm(){
+          var inputFrom = this.$.inputFrom;
+          var inputTo = this.$.inputTo;
+
+          var fromDate = new Date(inputFrom.value);
+          var toDate = new Date(inputTo.value);
+          var now = new Date();
+          if (fromDate < now && toDate < now && fromDate < toDate) {
+            inputFrom.invalid = false;
+            inputTo.invalid = false;
+            return this.dataFilter;
+          } else if (fromDate > now) {
+            inputFrom.errorMessage = "Needs to be in the past.";
+            inputFrom.invalid = true;
+          } else if (toDate > now) {
+            inputTo.errorMessage = "Needs to be in the past.";
+            inputTo.invalid = true;
+          } else if (fromDate > toDate) {
+            inputFrom.errorMessage = "Needs to be before To-Date";
+            inputTo.errorMessage = "Needs to be after From-Date";
+            inputFrom.invalid = true;
+            inputTo.invalid = true;
+          }
+          console.error("Invalid date input");
+          return null;
         },
 
         /**
