@@ -4,7 +4,7 @@ sudo: required
 services:
   - docker
 addons:
-  firefox: "46"
+  firefox: "46.0"
   apt:
     sources:
       - google-chrome
