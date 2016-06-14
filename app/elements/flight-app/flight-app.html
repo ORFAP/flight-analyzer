@@ -139,7 +139,7 @@ This element handles the basic layout, navigation and routing of the app.
         <paper-menu selected="{{routeData.page}}" attr-for-selected="page" on-tap="closeDrawer">
           <paper-item page="graph">Graph</paper-item>
           <paper-item page="settings">Load Filter</paper-item>
-          <paper-item page="crawler">Crawler</paper-item>
+          <paper-item page="crawling">Crawler</paper-item>
         </paper-menu>
       </app-drawer>
       <app-header-layout>
@@ -158,7 +158,7 @@ This element handles the basic layout, navigation and routing of the app.
           <login-page id="loginpage" username="{{username}}" current-page="[[routeData.page]]" page=""></login-page>
           <graph-page airlines="[[airlines]]" markets="[[markets]]" table="[[table]]" page="graph"></graph-page>
           <settings-page settings="[[settings]]" current-page="[[routeData.page]]" page="settings"></settings-page>
-          <crawler-page base-url="[[baseCrawler]]" page="crawler"></crawler-page>
+          <crawler-page base-url="[[baseCrawler]]" page="crawling"></crawler-page>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>

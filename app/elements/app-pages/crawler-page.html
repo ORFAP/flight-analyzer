@@ -35,7 +35,9 @@ Provides a simple page to display and allow the load of all stored graph configu
       }
 
       paper-card {
-        background-color: white;
+        --paper-card-actions: {
+          color: var(--accent-color);
+        };
         border-radius: 2px;
         width: 500px;
       }
@@ -48,11 +50,9 @@ Provides a simple page to display and allow the load of all stored graph configu
         background-size: cover;
       }
 
-      paper-button {
-        --paper-button: {
-          @apply(--layout-vertical);
-          @apply(--layout-right-center);
-        };
+      .wrapper {
+        @apply(--layout-vertical);
+        @apply(--layout-end);
       }
 
       paper-progress {
@@ -71,7 +71,7 @@ Provides a simple page to display and allow the load of all stored graph configu
     <img src="../../images/crawler.jpg">
 
     <div class="layout horizontal center-justified">
-      <paper-card heading="Start Crawler">
+      <paper-card>
         <div class="card-content">
           <paper-input
             id="inputDate"
@@ -80,7 +80,7 @@ Provides a simple page to display and allow the load of all stored graph configu
             type="month"
             label="Month to Crawl"></paper-input>
         </div>
-        <div class="card-actions">
+        <div class="card-actions wrapper">
           <paper-button disabled="[[requesting]]" on-tap="_startCrawling">Start Crawling</paper-button>
         </div>
         <paper-progress indeterminate="[[requesting]]"></paper-progress>

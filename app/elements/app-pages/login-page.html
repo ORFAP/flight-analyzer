@@ -31,6 +31,11 @@ Provides a simple landing page that is responsible for logins.
         };
       }
 
+      .wrapper {
+        @apply(--layout-vertical);
+        @apply(--layout-end);
+      }
+
       video#bgvid {
         position: fixed;
         top: 50%;
@@ -56,8 +61,7 @@ Provides a simple landing page that is responsible for logins.
           value="{{username}}"
           on-keydown="_checkForEnter"></paper-input>
       </div>
-      <div class="card-actions">
-        <span class="flex"></span>
+      <div class="card-actions wrapper">
         <paper-button on-tap="signin">Start</paper-button>
       </div>
     </paper-card>
