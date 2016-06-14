@@ -56,6 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../app-pages/login-page.html">
 <link rel="import" href="../app-pages/graph-page.html">
 <link rel="import" href="../app-pages/settings-page.html">
+<link rel="import" href="../app-pages/crawler-page.html">
 <link rel="import" href="../data-elements/settings-data.html">
 <link rel="import" href="../data-elements/transtats-data.html">
 
@@ -139,6 +140,7 @@ This element handles the basic layout, navigation and routing of the app.
         <paper-menu selected="{{routeData.page}}" attr-for-selected="page" on-tap="closeDrawer">
           <paper-item page="graph">Graph</paper-item>
           <paper-item page="settings">Load Filter</paper-item>
+          <paper-item page="crawler">Crawler</paper-item>
         </paper-menu>
       </app-drawer>
       <app-header-layout>
@@ -157,6 +159,7 @@ This element handles the basic layout, navigation and routing of the app.
           <login-page id="loginpage" username="{{username}}" current-page="[[routeData.page]]" page=""></login-page>
           <graph-page airlines="[[airlines]]" markets="[[markets]]" table="[[table]]" page="graph"></graph-page>
           <settings-page settings="[[settings]]" current-page="[[routeData.page]]" page="settings"></settings-page>
+          <crawler-page base-url="[[baseCrawler]]" page="crawler"></crawler-page>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -195,6 +198,13 @@ This element handles the basic layout, navigation and routing of the app.
           base: {
             type: String,
             value: "http://10.28.2.166/api"
+          },
+          /**
+           * The base URL for the API of the Crawler.
+           */
+          baseCrawler: {
+            type: String,
+            value: "http://10.28.2.166/crawler"
           },
           /**
            * All available settings that can be loaded.

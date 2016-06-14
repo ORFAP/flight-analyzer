@@ -1,0 +1,156 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles-classes.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+
+
+<!--
+Provides a simple page to display and allow the load of all stored graph configurations (settings).
+
+@element settings-page
+-->
+<dom-module id="crawler-page">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      paper-card {
+        background-color: white;
+        border-radius: 2px;
+        width: 500px;
+      }
+
+      img {
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        background: url(../../images/planes.PNG) no-repeat;
+        background-size: cover;
+      }
+
+      paper-button {
+        --paper-button: {
+          @apply(--layout-vertical);
+          @apply(--layout-right-center);
+        };
+      }
+
+      paper-progress {
+        width: 100%;
+        --paper-progress-active-color: var(--accent-color);
+      }
+    </style>
+
+    <iron-ajax
+      id="ajaxStartCrawler"
+      url="[[baseUrl]]/crawlIntoBackend"
+      on-error="_errorHandler"
+      loading="{{requesting}}"
+      verbose></iron-ajax>
+
+    <img src="../../images/crawler.jpg">
+
+    <div class="layout horizontal center-justified">
+      <paper-card heading="Start Crawler">
+        <div class="card-content">
+          <paper-input
+            id="inputDate"
+            error-message="Date has to be in the past."
+            value="{{date}}"
+            type="month"
+            label="Month to Crawl"></paper-input>
+        </div>
+        <div class="card-actions">
+          <paper-button disabled="[[requesting]]" on-tap="_startCrawling">Start Crawling</paper-button>
+        </div>
+        <paper-progress indeterminate="[[requesting]]"></paper-progress>
+      </paper-card>
+    </div>
+
+  </template>
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'crawler-page',
+
+        properties: {
+          /**
+           * Property that reflects wether there is an active AJAX-Request.
+           **/
+          requesting: {
+            type: Boolean,
+            value: false,
+            notify: true
+          }
+        },
+
+        /**
+         * Error Handler for AJAX-Request
+         * @param e Error that occured.
+         * @private
+         */
+        _errorHandler: function (e) {
+          var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
+          this.fire('show-toast', message);
+        },
+
+        /**
+         * Validates the input date and performs the request.
+         * @param e
+         * @private
+         */
+        _startCrawling: function (e) {
+          var timestamp = Date.parse(this.date);
+          var datefield = this.$.inputDate;
+
+          if (isNaN(timestamp) == false) {
+            var date = new Date(timestamp);
+            var today = new Date();
+
+            if (date > today) {
+              datefield.invalid = true;
+              return;
+            }
+
+            datefield.invalid = false;
+
+            var ajax = this.$.ajaxStartCrawler;
+            var params = {
+              year: date.getFullYear(),
+              month: date.getMonth()
+            };
+            ajax.params = params;
+            ajax.generateRequest();
+
+          } else {
+            datefield.invalid = true;
+          }
+
+        }
+
+      });
+    })();
+  </script>
+</dom-module>
