@@ -38,6 +38,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/platinum-sw/platinum-sw-register.html">
 -->
 
+<link rel="stylesheet" type="text/css" href="../../bower_components/clippyjs/build/clippy.css" media="all">
+<script src="../../bower_components/clippyjs/build/clippy.min.js"></script>
+<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
 
 <!-- App Layout elements -->
 
@@ -149,6 +152,7 @@ This element handles the basic layout, navigation and routing of the app.
             <div title class="paper-font-title" spacer>Flight Analyzer</div>
             <span>[[username]]</span>
             <paper-icon-button icon="social:share"></paper-icon-button>
+            <paper-icon-button icon="help" on-tap="_help"></paper-icon-button>
             <paper-icon-button on-tap="_logout" icon="exit-to-app"></paper-icon-button>
           </app-toolbar>
           <paper-progress indeterminate="[[active]]"></paper-progress>
@@ -224,6 +228,29 @@ This element handles the basic layout, navigation and routing of the app.
           'load-settings': '_loadSettingsHandler',
           'show-toast': '_showToast',
           'navigate': '_navigateHandler'
+        },
+
+        _help: function () {
+          clippy.load('Clippy', function (agent) {
+            agent.moveTo(window.innerWidth - 150, 10, 0);
+            agent.show();
+            var x = Math.floor(Math.random() * window.innerWidth);
+            var y = Math.floor(Math.random() * window.innerHeight);
+            agent.moveTo(x, y);
+
+            var sentences = [
+              "It seems like you are trying to analyse some data. May I help you with that?",
+              "Want to fly with me?",
+              "Remember me?",
+              "What's up? Need help? RTFM!"
+            ];
+            agent.speak(sentences[Math.floor(Math.random() * sentences.length)]);
+
+            window.setTimeout(function (agent) {
+              agent.hide();
+            }, 8000, agent);
+
+          });
         },
 
         /**
