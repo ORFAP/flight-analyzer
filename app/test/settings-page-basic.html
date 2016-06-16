@@ -31,18 +31,67 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <script>
 
-  suite('settings-page tests', function() {
+  suite('settings-page tests', function () {
     var settingsPage;
 
-    setup(function() {
+    setup(function () {
       settingsPage = fixture('basic');
     });
 
-    test('_computeClass(selected)', function() {
+    test('_computeClass(selected)', function () {
       assert.equal(settingsPage._computeClass(true), 'iron-selected');
       assert.equal(settingsPage._computeClass(false), '');
     });
 
+    test('fires event when on page settings', function (done) {
+      settingsPage.addEventListener('load-settings', function (event) {
+        assert(true);
+        done();
+      });
+      settingsPage.currentPage = "settings";
+    });
+
+    test('fires no event when on page graph', function (done) {
+      var errTimeout = setTimeout(function () {
+        assert(true, 'Event didn\'t fire');
+        done();
+      }, 1000);
+
+      settingsPage.addEventListener('load-settings', function (event) {
+        assert(false);
+        done();
+      });
+
+      settingsPage.currentPage = "graph";
+    });
+
+    test('Test Filter-Method correct filtering', function () {
+      var settings = [
+        {name: "test", creator: "hans"},
+        {name: "hans", creator: "meier"},
+        {name: "qwer", creator: "peter"},
+        {name: "asdf", creator: "otto"},
+        {name: "yxcv", creator: "fabian"},
+        {name: "uiop", creator: "rene"},
+        {name: "hjkl", creator: "arne"}
+      ];
+
+      var result = settingsPage._filter(settings, "test");
+      assert.equal(result.length, 1);
+
+      result = settingsPage._filter(settings, "hans");
+      assert.equal(result.length, 2);
+
+      result = settingsPage._filter(settings, "a");
+      assert.equal(result.length, 5);
+    });
+
+    test('Test isEmpty returns true if empty array is given', function () {
+      var test = [];
+      assert.equal(settingsPage._isEmpty(test), true);
+      test = ["asdf"];
+      assert.equal(settingsPage._isEmpty(test), false);
+    });
   });
 </script>
 
