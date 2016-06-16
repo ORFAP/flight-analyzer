@@ -139,7 +139,7 @@ Provides a simple page to display and allow the load of all stored graph configu
             var ajax = this.$.ajaxStartCrawler;
             var params = {
               year: date.getFullYear(),
-              month: date.getMonth()
+              month: date.getMonth() + 1
             };
             ajax.params = params;
             ajax.generateRequest();
