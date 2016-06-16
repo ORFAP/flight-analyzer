@@ -63,6 +63,9 @@ Provides a simple page to show the graph for the statistics and all controls to 
           }
         },
 
+        /**
+         * Reload data on viewing the graph page.
+         */
         ready: function () {
           if (this.currentPage === "graph") {
             this.fire("load-airlines-markets");
