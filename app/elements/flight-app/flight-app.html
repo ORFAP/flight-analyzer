@@ -156,7 +156,7 @@ This element handles the basic layout, navigation and routing of the app.
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
           <login-page id="loginpage" username="{{username}}" current-page="[[routeData.page]]" page=""></login-page>
-          <graph-page airlines="[[airlines]]" markets="[[markets]]" table="[[table]]" page="graph"></graph-page>
+          <graph-page airlines="[[airlines]]" current-page="[[routeData.page]]" markets="[[markets]]" table="[[table]]" page="graph"></graph-page>
           <settings-page settings="[[settings]]" current-page="[[routeData.page]]" page="settings"></settings-page>
           <crawler-page base-url="[[baseCrawler]]" page="crawling"></crawler-page>
         </iron-pages>
@@ -222,6 +222,7 @@ This element handles the basic layout, navigation and routing of the app.
           'save-setting': '_saveSettingHandler',
           'apply-setting': '_applySettingHandler',
           'load-settings': '_loadSettingsHandler',
+          'load-airlines-markets': '_loadAirlinesMarketsHandler',
           'show-toast': '_showToast',
           'navigate': '_navigateHandler'
         },
@@ -299,6 +300,10 @@ This element handles the basic layout, navigation and routing of the app.
          */
         _loadSettingsHandler: function () {
           this.$.settingsData.getAll();
+        },
+
+        _loadAirlinesMarketsHandler: function(){
+          this.$.transtatsData.loadAirlinesAndMarkets();
         },
 
         /**

@@ -97,7 +97,7 @@ It can be used to receive all markets and airlines as well as retreiving the int
         /**
          * fetches the data when the website is loaded
          */
-        ready: function () {
+        loadAirlinesAndMarkets: function () {
           this.$.ajaxGetAirlines.generateRequest();
           this.$.ajaxGetMarkets.generateRequest();
         },
