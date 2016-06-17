@@ -182,19 +182,33 @@ via the transtats-data-element.
           var dataset = [];
 
           if (Object.keys(data.data).length > 15) {
+            var tempData = {};
+            var keys = Object.keys(data.data).sort(function (a, b) {
+              var sumA = data.data[a].reduce(function (a, b) {
+                return a + b;
+              }, 0);
+              var sumB = data.data[b].reduce(function (a, b) {
+                return a + b;
+              }, 0);
+              return sumB - sumA;
+            }).map(function (elem, index, arr) {
+              return elem;
+            });
+
+            for (var i = 0; i < 15; i++) {
+              tempData[keys[i]] = data.data[keys[i]];
+            }
+            data.data = tempData;
             this.fire('show-toast', "More than 15 elements. Only first 15 can be shown.");
           }
 
           var counter = 0;
           for (var dataElement in data.data) {
-            if (counter <= 14) {
-              dataset.push({
-                label: dataElement,
-                backgroundColor: this.colors[counter],
-                data: data.data[dataElement]
-              });
-            }
-            counter++;
+            dataset.push({
+              label: dataElement,
+              backgroundColor: this.colors[counter++],
+              data: data.data[dataElement]
+            });
           }
 
           return dataset;
