@@ -172,6 +172,7 @@ Provides a simple page to display and allow the load of all stored graph configu
         _select: function (e) {
           var flightfilter = document.querySelector("#flightfilter");
           flightfilter.dataFilter = this.selectedFilter;
+          this.fire("apply-setting", this.selectedFilter);
           this.fire('navigate', 'graph');
         }
 

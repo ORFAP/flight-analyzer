@@ -95,11 +95,11 @@ Group of input fields and selectors to describe the settings a user can change t
       <div class="section main paper-font-body2">SELECTORS AND FILTERS</div>
 
       <div class="section paper-font-body1">Airline Selector</div>
-      <paper-chips-input label="Add an Airline" values="[[_computeForChips(airlines)]]"
+      <paper-chips-input no-label-float label="Add an Airline" values="[[_computeForChips(airlines)]]"
                          selected-values="{{dataFilter.filter.airlines}}"></paper-chips-input>
 
       <div class="section paper-font-body1">Destination Selector</div>
-      <paper-chips-input label="Add a Market" values="[[_computeForChips(markets)]]"
+      <paper-chips-input no-label-float label="Add a Market" values="[[_computeForChips(markets)]]"
                          selected-values="{{dataFilter.filter.destinations}}"></paper-chips-input>
 
       <paper-button class="applybtn" on-tap="_applySetting">Apply</paper-button>
