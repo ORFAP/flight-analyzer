@@ -9,6 +9,8 @@
     "app-layout": "PolymerLabs/app-layout#^0.0.14",
     "carbon-route": "PolymerElements/carbon-route#^0.8.4",
     "Chart.js": "^2.0.0",
+    "clippyjs": "*",
+    "jquery": "3.0.0",
     "paper-chips-input": "peter-mueller/paper-chips-input"
   },
   "devDependencies": {
