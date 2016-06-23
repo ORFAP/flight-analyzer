@@ -89,24 +89,20 @@ Provides a simple page to display and allow the load of all stored graph configu
 
       <paper-material elevation="1" role="listbox">
 
-        <iron-list items="[[_filter(settings, name)]]" as="filter" selection-enabled selected-item="{{selectedFilter}}">
-          <template>
-            <paper-item class$="{{_computeClass(selected)}}">
-              <iron-icon icon="lock" hidden="[[filter.shareable]]"></iron-icon>
-              <iron-icon icon="social:public" hidden="[[!filter.shareable]]"></iron-icon>
-              <b>[[filter.name]]</b>
-              <span class="flex"></span>
-              <div>[[filter.creator]]</div>
-            </paper-item>
-          </template>
-        </iron-list>
+        <template is="dom-repeat" items="[[_filter(settings, name)]]" as="filter">
+          <paper-item on-tap="_select" setting="[[filter]]" class$="{{_computeClass(selected)}}">
+            <iron-icon icon="lock" hidden="[[filter.shareable]]"></iron-icon>
+            <iron-icon icon="social:public" hidden="[[!filter.shareable]]"></iron-icon>
+            <b>[[filter.name]]</b>
+            <span class="flex"></span>
+            <div>[[filter.creator]]</div>
+          </paper-item>
+        </template>
 
         <h2 hidden="{{!_isEmpty(settings)}}" class="paper-font-code2 centered">no settings found</h2>
 
       </paper-material>
     </div>
-
-    <paper-fab hidden="{{!selectedFilter}}" icon="done" on-tap="_select"></paper-fab>
   </template>
   <script>
     (function () {
@@ -170,9 +166,10 @@ Provides a simple page to display and allow the load of all stored graph configu
          * @private
          */
         _select: function (e) {
+          var item = e.model.filter;
           var flightfilter = document.querySelector("#flightfilter");
-          flightfilter.dataFilter = this.selectedFilter;
-          this.fire("apply-setting", this.selectedFilter);
+          flightfilter.dataFilter = item;
+          this.fire("apply-setting", item);
           this.fire('navigate', 'graph');
         }
 
