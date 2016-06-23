@@ -64,6 +64,7 @@ Provides a simple page to display and allow the load of all stored graph configu
     <iron-ajax
       id="ajaxStartCrawler"
       url="[[baseUrl]]/crawlIntoBackend"
+      on-response="_responseHandlerLoad"
       on-error="_errorHandler"
       loading="{{requesting}}"
       verbose></iron-ajax>
@@ -117,6 +118,15 @@ Provides a simple page to display and allow the load of all stored graph configu
         },
 
         /**
+         * Response Handler. Called when the crawler is finished.
+         * @param e Event from response
+         * @private
+         */
+        _responseHandlerLoad: function (e) {
+          this.fire('show-toast', 'Successfully crawled the data. It may take a few minutes for the data to be available in the graph.')
+        },
+
+        /**
          * Validates the input date and performs the request.
          * @param e
          * @private
@@ -139,8 +149,9 @@ Provides a simple page to display and allow the load of all stored graph configu
             var ajax = this.$.ajaxStartCrawler;
             var params = {
               year: date.getFullYear(),
-              month: date.getMonth()
+              month: date.getMonth() + 1
             };
+            console.log(params);
             ajax.params = params;
             ajax.generateRequest();
 

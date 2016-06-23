@@ -11,8 +11,6 @@
     "Chart.js": "^2.0.0",
     "clippyjs": "*",
     "jquery": "3.0.0",
-    "paper-date-picker-item": "Collaborne/paper-date-picker-item#^1.0.26",
-
     "paper-chips-input": "peter-mueller/paper-chips-input"
   },
   "devDependencies": {

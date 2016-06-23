@@ -31,6 +31,10 @@ Provides a simple page to show the graph for the statistics and all controls to 
       flight-graph {
         margin-right: 32px;
       }
+
+      graph-settings {
+        width: 196px;
+      }
     </style>
     <div class="layout horizontal">
       <flight-graph table="[[table]]" class="flex"></flight-graph>
@@ -56,8 +60,21 @@ Provides a simple page to show the graph for the statistics and all controls to 
           /**
            * Calculated data from transtats to be used in the graph.
            */
-          table: Object
+          table: Object,
+          currentPage: {
+            type: String,
+            observer: "ready"
+          }
         },
+
+        /**
+         * Reload data on viewing the graph page.
+         */
+        ready: function () {
+          if (this.currentPage === "graph") {
+            this.fire("load-airlines-markets");
+          }
+        }
 
 
       });
