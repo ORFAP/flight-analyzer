@@ -39,7 +39,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="stylesheet" type="text/css" href="../../bower_components/clippyjs/build/clippy.css" media="all">
-<script src="../../bower_components/clippyjs/build/clippy.min.js"></script>
+
+<!-- Clippy and PDF Export imports -->
+<script type="text/javascript" src="../../bower_components/clippyjs/build/clippy.min.js"></script>
+<script type="text/javascript" src="../../bower_components/jspdf/dist/jspdf.min.js"></script>
+<script type="text/javascript" src="../../bower_components/html2canvas/build/html2canvas.min.js"></script>
+
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
 
 <!-- App Layout elements -->
@@ -151,8 +156,8 @@ This element handles the basic layout, navigation and routing of the app.
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div title class="paper-font-title" spacer>Flight Analyzer</div>
             <span>[[username]]</span>
-            <paper-icon-button icon="social:share"></paper-icon-button>
-            <paper-icon-button icon="help" on-tap="_help"></paper-icon-button>
+            <paper-icon-button on-tap="_pdfPrint" icon="social:share"></paper-icon-button>
+            <paper-icon-button on-tap="_help" icon="help"></paper-icon-button>
             <paper-icon-button on-tap="_logout" icon="exit-to-app"></paper-icon-button>
           </app-toolbar>
           <paper-progress indeterminate="[[active]]"></paper-progress>
@@ -160,7 +165,8 @@ This element handles the basic layout, navigation and routing of the app.
 
         <iron-pages id="ironpages" selected="{{routeData.page}}" attr-for-selected="page">
           <login-page id="loginpage" username="{{username}}" current-page="[[routeData.page]]" page=""></login-page>
-          <graph-page airlines="[[airlines]]" current-page="[[routeData.page]]" markets="[[markets]]" table="[[table]]"
+          <graph-page id="graphpage" airlines="[[airlines]]" current-page="[[routeData.page]]" markets="[[markets]]"
+                      table="[[table]]"
                       page="graph"></graph-page>
           <settings-page settings="[[settings]]" current-page="[[routeData.page]]" page="settings"></settings-page>
           <crawler-page base-url="[[baseCrawler]]" page="crawling"></crawler-page>
@@ -231,6 +237,27 @@ This element handles the basic layout, navigation and routing of the app.
           'show-toast': '_showToast',
           'navigate': '_navigateHandler'
         },
+
+        _pdfPrint: function () {
+          html2canvas(this.$.graphpage, {
+            onrendered: function (canvas) {
+              var imgData = canvas.toDataURL();
+
+              var imgWidth = 297;
+              var imgHeight = canvas.height * imgWidth / canvas.width;
+
+              // First param: landscape, second param: measurements in millimeter
+              var doc = new jsPDF('l', 'mm');
+
+              doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+              var date = new Date();
+              doc.save('flightanalyzer_' + date.toISOString() + '.pdf');
+            }
+          });
+
+
+        },
+
 
         _help: function () {
           clippy.load('Clippy', function (agent) {
