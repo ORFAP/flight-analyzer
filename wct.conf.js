@@ -18,6 +18,10 @@ var ret = {
   "plugins": {
     "local": {
       "browsers": ["chrome", "firefox"]
+    },
+    istanbul: {
+      dir: "./coverage",
+      reporters: ["lcov"]
     }
   }
 };
