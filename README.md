@@ -10,6 +10,11 @@ bower install
 npm start
 ```
 
+## Building
+
+```
+gulp build
+```
 ## Or try the fresh master image using docker 
 
 `(sudo) docker run -p 8080:80 petermueller/flight-analyzer`
