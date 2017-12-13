@@ -6,6 +6,7 @@ node_js:
 before_script:
   - npm i -g bower@1.7.1 gulp@3.9.0
   - bower i
+script:
   - gulp build
 deploy:
   provider: pages
