@@ -120,7 +120,7 @@ Provides a simple page to display and allow the load of all stored graph configu
         <div class="card-content">
 
           <div class="card-header">
-            Card Actions
+            Crawler Jobs
             <div class="card-location card-light">
               <paper-icon-button id="clear" alt="Clear Finished Jobs" on-tap="_clearStates" icon="communication:clear-all"></paper-icon-button>
               <paper-icon-button id="reload" alt="Refresh" on-tap="_reloadStates" icon="refresh"></paper-icon-button>
@@ -247,11 +247,12 @@ Provides a simple page to display and allow the load of all stored graph configu
               }
             );
           }
+          var that = this;
           fetch(new Request(this.baseUrl + "status", { method: 'GET' }))
             .then(function (response) {
               if (response.ok) {
                 response.json().then(function (data) {
-                  this.set('_crawlerStates', data);
+                  that.set('_crawlerStates', data);
                   console.log(data);
                 });
               } else {
