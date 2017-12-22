@@ -181,11 +181,11 @@ Provides a simple page to display and allow the load of all stored graph configu
           }
         },
 
-        attached: function() {
+        attached: function () {
           this._reloadStates();
         },
 
-        _getItemIcon: function(finished) {
+        _getItemIcon: function (finished) {
           return finished ? "icons:cloud-done" : "icons:cloud-download";
         },
 
@@ -226,11 +226,11 @@ Provides a simple page to display and allow the load of all stored graph configu
               duration: 700
             }
           );
-          fetch(new Request(this.baseUrl + "clearStatus", { method: 'POST' })).then(function(response) {
+          fetch(new Request(this.baseUrl + "clearStatus", { method: 'POST' })).then(function (response) {
             if (response.ok) {
               this._reloadStates();
             } else {
-              console.log(`Response was not OK! ${response}`);
+              console.log('Response was not OK!' + response);
             }
           })
         },
@@ -248,14 +248,14 @@ Provides a simple page to display and allow the load of all stored graph configu
             );
           }
           fetch(new Request(this.baseUrl + "status", { method: 'GET' }))
-            .then(function(response){
+            .then(function (response) {
               if (response.ok) {
-                response.json().then(function(data) {
+                response.json().then(function (data) {
                   this.set('_crawlerStates', data);
                   console.log(data);
                 });
               } else {
-                console.log(`Response was not OK!`);
+                console.log('Response was not OK!');
                 console.log(response);
               }
             });
@@ -293,9 +293,7 @@ Provides a simple page to display and allow the load of all stored graph configu
           } else {
             datefield.invalid = true;
           }
-
         }
-
       });
     })();
   </script>
