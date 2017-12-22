@@ -17,9 +17,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
 
 
 <!--
@@ -35,11 +37,9 @@ Provides a simple page to display and allow the load of all stored graph configu
       }
 
       paper-card {
-        --paper-card-actions: {
-          color: var(--accent-color);
-        };
         border-radius: 2px;
         width: 500px;
+        margin: 16px 0px;
       }
 
       img {
@@ -59,32 +59,101 @@ Provides a simple page to display and allow the load of all stored graph configu
         width: 100%;
         --paper-progress-active-color: var(--accent-color);
       }
+
+      table {
+        width: 100%;
+      }
+
+      th {
+        text-align: left;
+      }
+
+      .noData {
+        width: 100%;
+        text-align: center;
+      }
+
+      .noData span {
+        font-size: 24px;
+      }
+
+      .no-job {
+        width: 48px;
+        height: 48px;
+        padding: 8px;
+      }
+
+      .card-header {
+        @apply --paper-font-headline;
+      }
+
+      .card-light {
+        color: var(--paper-grey-600);
+      }
+
+      .card-location {
+        float: right;
+        font-size: 15px;
+        vertical-align: middle;
+      }
     </style>
 
-    <iron-ajax
-      id="ajaxStartCrawler"
-      url="[[baseUrl]]/crawlIntoBackend"
-      on-response="_responseHandlerLoad"
-      on-error="_errorHandler"
-      loading="{{requesting}}"
-      verbose></iron-ajax>
+    <iron-ajax id="ajaxStartCrawler" url="[[baseUrl]]/crawlIntoBackend" on-response="_responseHandlerLoad" on-error="_errorHandler"
+      loading="{{requesting}}" verbose></iron-ajax>
 
     <img src="../../images/crawler.jpg">
 
     <div class="layout horizontal center-justified">
-      <paper-card>
+      <paper-card heading="Start a new Job">
         <div class="card-content">
-          <paper-input
-            id="inputDate"
-            error-message="Date has to be in the past."
-            value="{{date}}"
-            type="month"
-            label="Month to Crawl"></paper-input>
+          <paper-input id="inputDate" error-message="Date has to be in the past." value="{{date}}" type="month" label="Month to Crawl"></paper-input>
         </div>
         <div class="card-actions wrapper">
-          <paper-button disabled="[[requesting]]" on-tap="_startCrawling">Start Crawling</paper-button>
+          <paper-button disabled="[[requesting]]" on-tap="_startCrawling">Start Crawler-Job</paper-button>
         </div>
-        <paper-progress indeterminate="[[requesting]]"></paper-progress>
+        <paper-progress hidden="[[!requesting]]" indeterminate="[[requesting]]"></paper-progress>
+      </paper-card>
+    </div>
+
+    <div class="layout horizontal center-justified">
+      <paper-card>
+        <div class="card-content">
+
+          <div class="card-header">
+            Card Actions
+            <div class="card-location card-light">
+              <paper-icon-button id="clear" alt="Clear Finished Jobs" on-tap="_clearStates" icon="communication:clear-all"></paper-icon-button>
+              <paper-icon-button id="reload" alt="Refresh" on-tap="_reloadStates" icon="refresh"></paper-icon-button>
+            </div>
+          </div>
+
+          <template is="dom-if" if="[[_hasData(_crawlerStates)]]">
+            <table>
+              <tr>
+                <th>Month</th>
+                <th>Started at</th>
+                <th>Status</th>
+              </tr>
+              <template is="dom-repeat" items="{{_crawlerStates}}">
+                <tr>
+                  <td>{{item.month}} of year {{item.year}}</td>
+                  <td>{{item.startTime}}</td>
+                  <td class="icon">
+                    <iron-icon icon="{{_getItemIcon(item.finished)}}"></iron-icon>
+                  </td>
+                </tr>
+              </template>
+            </table>
+          </template>
+
+          <template is="dom-if" if="[[!_hasData(_crawlerStates)]]">
+            <div class="noData layout vertical center">
+              <iron-icon class="no-job" icon="icons:cloud-off"></iron-icon>
+              <span>No Jobs active</span>
+            </div>
+          </template>
+
+        </div>
       </paper-card>
     </div>
 
@@ -104,7 +173,24 @@ Provides a simple page to display and allow the load of all stored graph configu
             type: Boolean,
             value: false,
             notify: true
+          },
+
+          _crawlerStates: {
+            type: Array,
+            value: []
           }
+        },
+
+        attached: function() {
+          this._reloadStates();
+        },
+
+        _getItemIcon: function(finished) {
+          return finished ? "icons:cloud-done" : "icons:cloud-download";
+        },
+
+        _hasData: function (states) {
+          return states.length != 0;
         },
 
         /**
@@ -115,6 +201,7 @@ Provides a simple page to display and allow the load of all stored graph configu
         _errorHandler: function (e) {
           var message = e.detail.error.message == null ? "An error occured performing your request." : e.detail.error.message;
           this.fire('show-toast', message);
+          this._reloadStates();
         },
 
         /**
@@ -123,7 +210,55 @@ Provides a simple page to display and allow the load of all stored graph configu
          * @private
          */
         _responseHandlerLoad: function (e) {
-          this.fire('show-toast', 'Successfully crawled the data. It may take a few minutes for the data to be available in the graph.')
+          this.fire('show-toast', 'Job started successfully. It may take a few minutes for the data to be available in the graph.')
+          this._reloadStates();
+        },
+
+        _clearStates: function (e) {
+          this.$.clear.animate(
+            [
+              { transform: 'translateX(0px)', opacity: 1 },
+              { transform: 'translateX(30px)', opacity: 0 },
+              { transform: 'translateX(-30px)', opacity: 0 },
+              { transform: 'translateX(0px)', opacity: 1 },
+            ],
+            {
+              duration: 700
+            }
+          );
+          fetch(new Request(this.baseUrl + "clearStatus", { method: 'POST' })).then(response => {
+            if (response.ok) {
+              this._reloadStates();
+            } else {
+              console.log(`Response was not OK! ${response}`);
+            }
+          })
+        },
+
+        _reloadStates: function (e) {
+          if (e) {
+            this.$.reload.animate(
+              [
+                { transform: 'rotate(0)' },
+                { transform: 'rotate(360deg)' }
+              ],
+              {
+                duration: 1000
+              }
+            );
+          }
+          fetch(new Request(this.baseUrl + "status", { method: 'GET' }))
+            .then(response => {
+              if (response.ok) {
+                response.json().then(data => {
+                  this.set('_crawlerStates', data);
+                  console.log(data);
+                });
+              } else {
+                console.log(`Response was not OK!`);
+                console.log(response);
+              }
+            });
         },
 
         /**
