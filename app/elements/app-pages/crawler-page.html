@@ -226,7 +226,7 @@ Provides a simple page to display and allow the load of all stored graph configu
               duration: 700
             }
           );
-          fetch(new Request(this.baseUrl + "clearStatus", { method: 'POST' })).then(response => {
+          fetch(new Request(this.baseUrl + "clearStatus", { method: 'POST' })).then(function(response) {
             if (response.ok) {
               this._reloadStates();
             } else {
@@ -248,9 +248,9 @@ Provides a simple page to display and allow the load of all stored graph configu
             );
           }
           fetch(new Request(this.baseUrl + "status", { method: 'GET' }))
-            .then(response => {
+            .then(function(response){
               if (response.ok) {
-                response.json().then(data => {
+                response.json().then(function(data) {
                   this.set('_crawlerStates', data);
                   console.log(data);
                 });
